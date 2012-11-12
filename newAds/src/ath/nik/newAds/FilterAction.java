@@ -17,8 +17,8 @@ import android.widget.Toast;
 
 public class FilterAction extends Activity{
 	public static final String PREFS_NAME = "MyPrefsFile";
-	TextView txt1;
-	TextView txt2;
+	//TextView txt1;
+	//TextView txt2;
 	SharedPreferences settings;
 	SharedPreferences.Editor editor;
 	@Override
@@ -26,8 +26,8 @@ public class FilterAction extends Activity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.firstscreen);
                 
-        txt1=(TextView) findViewById(R.id.categorytxt);
-        txt2=(TextView) findViewById(R.id.areatxt);
+        //txt1=(TextView) findViewById(R.id.categorytxt);
+        //txt2=(TextView) findViewById(R.id.areatxt);
         
         // Διαχείριση button
         
@@ -63,18 +63,6 @@ public class FilterAction extends Activity{
                 }
             });
         }
-        
-        
-        final Button button4 = (Button) findViewById(R.id.searchButton);
-        button4.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				Intent openStartingView = new Intent("ath.nik.newAds.SEARCHACTION");
-				startActivity(openStartingView);
-			}
-		});
         
         // Τέλος διαχείρισης button
         
@@ -179,13 +167,13 @@ public class FilterAction extends Activity{
       	
       	// Ενημέρωση των text
       	
-      	txt1.setText(VariablesStorage.getInstance().getCategoryTitle());
-      	txt2.setText("Μη επιλεγμένη κατηγορία");
+      	//txt1.setText(VariablesStorage.getInstance().getCategoryTitle());
+      	//txt2.setText("Μη επιλεγμένη κατηγορία");
 	}
 	
 	
 	
-	@Override
+	/*@Override
 	protected void onResume(){
 		super.onResume();
 		txt1.setText(VariablesStorage.getInstance().getCategoryTitle());
@@ -202,7 +190,7 @@ public class FilterAction extends Activity{
 				txt2.setText(s.substring(0, 30)+"...");
 			}
 		}
-	}
+	}*/
 	
 	private boolean checkInternetConnection() {
 
@@ -211,11 +199,9 @@ public class FilterAction extends Activity{
 		// ARE WE CONNECTED TO THE NET
 
 		if (conMgr.getActiveNetworkInfo() != null && conMgr.getActiveNetworkInfo().isAvailable() && conMgr.getActiveNetworkInfo().isConnected()) {
-			//Toast.makeText(this, "nai", 4000).show();
 			return true;
 
 		} else {
-			//Toast.makeText(this, "oxi", 4000).show();
 			return false;
 
 		}
