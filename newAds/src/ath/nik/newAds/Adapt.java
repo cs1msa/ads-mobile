@@ -9,10 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class Adapt extends ArrayAdapter<String>{
-	public static final String PREFS_NAME = "MyPrefsFile";
 	private static ArrayList<WSResults> searchArrayList;
 	private Context con;
 	
@@ -34,7 +32,6 @@ public class Adapt extends ArrayAdapter<String>{
 		holder.CheckEdit.setId(Integer.parseInt(searchArrayList.get(position).getId()));
 		
 		if(con.getClass().getSimpleName().equals("AreaActivityWS")){
-			//Toast.makeText(con, , 2000).show();
 			if (VariablesStorage.getInstance().IDAreaExist(searchArrayList.get(position).getId())){
 				holder.CheckEdit.setChecked(true);
 			}else{
@@ -73,7 +70,6 @@ public class Adapt extends ArrayAdapter<String>{
 			});
 		}
 
-		//Toast.makeText(con,VariablesStorage.getInstance().allChosensAreas()+" and "+VariablesStorage.getInstance().allChosensCategorys(), 2000).show();
 		return row;
 	}
 	static class ViewHolder {

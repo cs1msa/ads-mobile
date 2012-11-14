@@ -19,9 +19,7 @@ public class FilterAction extends Activity{
 	public static final String PREFS_NAME = "MyPrefsFile";
 	SharedPreferences settings;
 	SharedPreferences.Editor editor;
-	Button button1;
-    Button button2;
-    Button button3;
+	Button button1,button2,button3,button4;
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,6 +28,8 @@ public class FilterAction extends Activity{
         button1 = (Button) findViewById(R.id.areabtn);
         button2 = (Button) findViewById(R.id.categorybtn);
         button3 = (Button) findViewById(R.id.searchads);
+        button4 = (Button) findViewById(R.id.overview);
+        
         
         // Διαχείριση button
  
@@ -61,6 +61,13 @@ public class FilterAction extends Activity{
                 }
             });
         }
+        
+        button4.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+				Intent openStartingView = new Intent("ath.nik.newAds.SHOWFILTERS");
+				startActivity(openStartingView);
+            }
+        });
         
         // Τέλος διαχείρισης button
         

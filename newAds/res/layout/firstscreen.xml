@@ -52,7 +52,7 @@
         android:layout_below="@+id/relativeLayout1" >
 
         <Button
-            android:id="@+id/button1"
+            android:id="@+id/overview"
             android:layout_width="wrap_content"
             android:layout_height="90dp"
             android:layout_alignLeft="@+id/areabtn"
@@ -67,14 +67,14 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
             android:layout_alignRight="@+id/categorybtn"
-            android:layout_alignTop="@+id/button1"
+            android:layout_alignTop="@+id/overview"
             android:text="@string/extras" />
 
         <Button
             android:id="@+id/areabtn"
             android:layout_width="150dp"
             android:layout_height="90dp"
-            android:layout_above="@+id/button1"
+            android:layout_above="@+id/overview"
             android:layout_alignParentRight="true"
             android:drawableTop="@drawable/mapicon"
             android:text="@string/areas" />
