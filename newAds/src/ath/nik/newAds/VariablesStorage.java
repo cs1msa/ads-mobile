@@ -6,9 +6,6 @@ import java.util.ArrayList;
 
 public class VariablesStorage
 {
-	//public static final String PREFS_NAME = "MyPrefsFile";
-	//SharedPreferences settings;
-	//SharedPreferences.Editor editor;
 	private static VariablesStorage instance;
 	private ArrayList<String> chosenAreasTitles,chosenAreasIDs,chosenCategorysTitles,chosenCategorysIDs;
 	public static void initInstance()
