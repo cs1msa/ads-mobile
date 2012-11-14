@@ -31,26 +31,49 @@ public class Adapt extends ArrayAdapter<String>{
 		}
 		
 		
-		
 		holder.CheckEdit.setId(Integer.parseInt(searchArrayList.get(position).getId()));
-		if (VariablesStorage.getInstance().IDAreaExist(searchArrayList.get(position).getId())){
-			holder.CheckEdit.setChecked(true);
-		}else{
-			holder.CheckEdit.setChecked(false);
-		}
-		holder.CheckEdit.setOnClickListener(new OnClickListener(){
-			@Override
-			public void onClick(View v) {
-				if(!((CheckBox)v).isChecked()){
-					VariablesStorage.getInstance().deleteAreaTitleAndID(searchArrayList.get(position).getId(), searchArrayList.get(position).getTitle());
-				}else{
-					VariablesStorage.getInstance().addChosenAreaTitle(searchArrayList.get(position).getTitle());
-					VariablesStorage.getInstance().addChosenAreaID(searchArrayList.get(position).getId());
-					//Toast.makeText(v.getContext(), VariablesStorage.getInstance().allChosensAreas(), 2000).show();
-				}
+		
+		if(con.getClass().getSimpleName().equals("AreaActivityWS")){
+			//Toast.makeText(con, , 2000).show();
+			if (VariablesStorage.getInstance().IDAreaExist(searchArrayList.get(position).getId())){
+				holder.CheckEdit.setChecked(true);
+			}else{
+				holder.CheckEdit.setChecked(false);
 			}
-   
-		});
+			holder.CheckEdit.setOnClickListener(new OnClickListener(){
+				@Override
+				public void onClick(View v) {
+					if(!((CheckBox)v).isChecked()){
+						VariablesStorage.getInstance().deleteAreaTitleAndID(searchArrayList.get(position).getId(), searchArrayList.get(position).getTitle());
+					}else{
+						VariablesStorage.getInstance().addChosenAreaTitle(searchArrayList.get(position).getTitle());
+						VariablesStorage.getInstance().addChosenAreaID(searchArrayList.get(position).getId());
+					}
+				}
+			});
+		}else{
+			if (VariablesStorage.getInstance().IDCategoryExist(searchArrayList.get(position).getId())){
+				holder.CheckEdit.setChecked(true);
+			}else{
+				holder.CheckEdit.setChecked(false);
+			}
+			
+			holder.CheckEdit.setOnClickListener(new OnClickListener(){
+				@Override
+				public void onClick(View v) {
+					if(!((CheckBox)v).isChecked()){
+						VariablesStorage.getInstance().deleteCategoryTitleAndID(searchArrayList.get(position).getId(), searchArrayList.get(position).getTitle());
+					}else{
+						
+						VariablesStorage.getInstance().addChosenCategoryTitle(searchArrayList.get(position).getTitle());
+						VariablesStorage.getInstance().addChosenCategoryID(searchArrayList.get(position).getId());
+					}
+				}
+	   
+			});
+		}
+
+		//Toast.makeText(con,VariablesStorage.getInstance().allChosensAreas()+" and "+VariablesStorage.getInstance().allChosensCategorys(), 2000).show();
 		return row;
 	}
 	static class ViewHolder {
