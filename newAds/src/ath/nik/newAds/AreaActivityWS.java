@@ -2,6 +2,7 @@ package ath.nik.newAds;
 
 import java.util.ArrayList;
 import android.app.ListActivity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -10,7 +11,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Toast;
 
 
 public class AreaActivityWS extends ListActivity{
@@ -18,29 +18,38 @@ public class AreaActivityWS extends ListActivity{
 	private WebService ws;
 	private ArrayList<String> items,father;
 	private ArrayList<WSResults> list,temp=new ArrayList<WSResults>();
-	//protected MyApplication app;
 
 	ListView lv;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.listforareas);
+        setContentView(R.layout.lists);
         lv = (ListView) findViewById(android.R.id.list);
         lv.setTextFilterEnabled(true);
-        
         father=new ArrayList<String>();
 	    father.add("0");
 	    makeList(father.get(father.size()-1));
 	    
-	    //app = (MyApplication)getApplication();
-	    	    
-	    final Button button1 = (Button) findViewById(R.id.OKAreaBtn);
+	    final Button button1 = (Button) findViewById(R.id.listsreturn);
         button1.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
             	finish();
             }
-        }); 
-	    
+        });  
+        
+        final Button button2 = (Button) findViewById(R.id.listsdelete);
+        button2.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				VariablesStorage.getInstance().initializeArea();
+				finish();
+				Intent openStartingView = new Intent("ath.nik.newAds.AREAACTIVITYWS");
+				startActivity(openStartingView);
+			}
+		});
+        
+        
     }
 	public void makeList(String num){
 		ws=new WebService("ReturnArea",num);

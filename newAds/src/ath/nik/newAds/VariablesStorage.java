@@ -2,17 +2,15 @@ package ath.nik.newAds;
 
 import java.util.ArrayList;
 
-import android.content.SharedPreferences;
+//import android.content.SharedPreferences;
 
 public class VariablesStorage
 {
-	public static final String PREFS_NAME = "MyPrefsFile";
-	SharedPreferences settings;
-	SharedPreferences.Editor editor;
+	//public static final String PREFS_NAME = "MyPrefsFile";
+	//SharedPreferences settings;
+	//SharedPreferences.Editor editor;
 	private static VariablesStorage instance;
-	private ArrayList<String> chosenAreasTitles;
-	private ArrayList<String> chosenAreasIDs;
-	private String chosenCategoryTitle,chosenCategoryID;
+	private ArrayList<String> chosenAreasTitles,chosenAreasIDs,chosenCategorysTitles,chosenCategorysIDs;
 	public static void initInstance()
 	{
 		if (instance == null)
@@ -31,7 +29,22 @@ public class VariablesStorage
 		// Constructor hidden because this is a singleton
 	}
   
-  
+	
+	public void initializeVariables(){
+		initializeArea();
+		initializeCategory();	
+	}
+	
+	public void initializeArea(){
+		chosenAreasTitles=new ArrayList<String>();
+		chosenAreasIDs=new ArrayList<String>();
+	}
+	
+	public void initializeCategory(){
+		chosenCategorysTitles=new ArrayList<String>();
+		chosenCategorysIDs=new ArrayList<String>();
+	}
+	
 	// Area Methods
   
 	public void addChosenAreaTitle(String title)
@@ -58,33 +71,37 @@ public class VariablesStorage
 	public String allChosensAreas(){
 		return chosenAreasTitles.toString();
 	}
-	public void initializeVariables(){
-		chosenAreasTitles=new ArrayList<String>();
-		chosenAreasIDs=new ArrayList<String>();
-		chosenCategoryTitle="Μη επιλεγμένη κατηγορία";
-		chosenCategoryID="-1";
-	}
 	public boolean IDAreaExist(String id){
 		return chosenAreasIDs.contains(id);
 	}
   
-  
-  
-  
 	// Category Methods
-	public void setCategoryTitle(String cat){
-		chosenCategoryTitle=cat;
-	}
-	public String getCategoryTitle(){
-		return chosenCategoryTitle;
-	}
-	public void setCategoryID(String id){
-		chosenCategoryID=id;
-	}
-	public String getCategoryID(){
-		return chosenCategoryID;
-	}
 	
+	public void addChosenCategoryTitle(String cat){
+		chosenCategorysTitles.add(cat);
+	}
+	public void addChosenCategoryID(String id){
+		chosenCategorysIDs.add(id);
+	}
+	public ArrayList<String> getChosenCategoryIDs()
+	{
+		return chosenCategorysIDs;
+	}
+	public ArrayList<String> getChosenCategoryTitles()
+	{
+		return chosenCategorysTitles;
+	}
+	public void deleteCategoryTitleAndID(String id, String Title)
+	{
+		chosenCategorysIDs.remove(id);
+		chosenCategorysTitles.remove(Title);
+	}
+	public String allChosensCategorys(){
+		return chosenCategorysTitles.toString();
+	}
+	public boolean IDCategoryExist(String id){
+		return chosenCategorysIDs.contains(id);
+	}
   
   
   // SAVE, LOAD AND DELETE

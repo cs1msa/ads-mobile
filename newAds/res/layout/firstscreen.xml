@@ -1,44 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="5dp" >
-
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:padding="1dp" >
+
     <RelativeLayout
         android:id="@+id/relativeLayout1"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="200dp" >
+
+        <Button
+            android:id="@+id/searchads"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:text="@string/adssearch" />
 
         <TextView
             android:id="@+id/textView1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
+            android:layout_centerInParent="true"
             android:layout_alignParentTop="true"
             android:gravity="center"
             android:padding="5dp"
-            android:text="Παρακαλούμε επιλέξτε τα κριτήρια αναζήτησης"
+            android:text="@string/adssearch"
             android:textSize="20dp" />
 
         <EditText
             android:id="@+id/editText1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/textView1"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="30dp"
-            android:ems="10"
+            android:layout_centerInParent="true"
+            android:layout_centerVertical="true"
             android:background="@color/grey"
-            android:gravity="center" />
+            android:hint="@string/keywords"
+            android:ems="10"
+            android:gravity="center" >
 
-        <Button
-            android:id="@+id/searchads"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/editText1"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="40dp"
-            android:text="Αναζήτηση Αγγελιών" />
+            <requestFocus />
+        </EditText>
 
     </RelativeLayout>
 
@@ -56,7 +58,7 @@
             android:layout_alignLeft="@+id/areabtn"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
-            android:text="Επισκόπηση Φίλτρων" />
+            android:text="@string/overview" />
 
         <Button
             android:id="@+id/button2"
@@ -66,7 +68,7 @@
             android:layout_alignParentLeft="true"
             android:layout_alignRight="@+id/categorybtn"
             android:layout_alignTop="@+id/button1"
-            android:text="Πρόσθετα Φίλτρα" />
+            android:text="@string/extras" />
 
         <Button
             android:id="@+id/areabtn"
@@ -75,7 +77,7 @@
             android:layout_above="@+id/button1"
             android:layout_alignParentRight="true"
             android:drawableTop="@drawable/mapicon"
-            android:text="Περιοχές" />
+            android:text="@string/areas" />
 
         <Button
             android:id="@+id/categorybtn"
@@ -85,17 +87,18 @@
             android:layout_alignBottom="@+id/areabtn"
             android:layout_alignParentLeft="true"
             android:drawableTop="@drawable/checklist"
-            android:text="Κατηγορίες" />
-
+            android:text="@string/categories" />
+
         <TextView
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_above="@+id/areabtn"
+            android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:gravity="center"
             android:padding="5dp"
-            android:text="Επιλογή Φίλτρων"
+            android:text="@string/filterforsearch"
             android:textSize="20dp" />
 
     </RelativeLayout>
