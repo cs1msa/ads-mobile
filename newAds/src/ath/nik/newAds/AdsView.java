@@ -1,4 +1,4 @@
-package ath.nik.newAds;
+/*package ath.nik.newAds;
 
 //import android.app.Activity;
 import java.util.ArrayList;
@@ -25,11 +25,8 @@ import android.widget.Toast;
 public class AdsView extends ListActivity{
 	public static final String PREFS_NAME = "MyPrefsFile";
 	private ArrayList<String> items2=new ArrayList<String>();
-	//private ArrayList<String> items3=new ArrayList<String>();
-	//private ArrayList<WSResults> list=new ArrayList<WSResults>();
 	private WebService ws;
 	private SoapObject so;
-	private Bundle b;
 	private ListView lv;
 	private SharedPreferences prefs;
 	private String start,howmany;
@@ -39,7 +36,6 @@ public class AdsView extends ListActivity{
         setContentView(R.layout.adsscreen);
         lv = (ListView) findViewById(android.R.id.list);
         lv.setTextFilterEnabled(true);
-        b = getIntent().getExtras();
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
        	start="0";
        	howmany=prefs.getString("listPref", "10");
@@ -47,7 +43,6 @@ public class AdsView extends ListActivity{
         
         final TextView txt = (TextView) findViewById(R.id.showNumbersOfAds);
         txt.setText(start+" - "+howmany);
-        
         // Διαχείριση button επόμενο-προηγουμενο
         
         final Button button1 = (Button) findViewById(R.id.next);
@@ -76,8 +71,7 @@ public class AdsView extends ListActivity{
         
     }
 	public void makelist(String from, String to){
-		ws=new WebService("ReturnAds",b.getString("CategoryID"),b.getString("AreaID"),from,to);
-        //Toast.makeText(this, b.getString("CategoryID")+" - "+b.getString("AreaID")+" - "+from+" - "+to, 3000).show();
+		ws=new WebService("ReturnAds",VariablesStorage.getInstance().getChosenCategoryIDs().toString(),VariablesStorage.getInstance().getChosenAreaIDs().toString(),from,to);
 		so = ws.getso();
         try{
         	String s1,s2;
@@ -157,3 +151,4 @@ public class AdsView extends ListActivity{
 		super.onResume();		
 	}
 }
+*/

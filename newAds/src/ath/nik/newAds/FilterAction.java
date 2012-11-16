@@ -52,9 +52,7 @@ public class FilterAction extends Activity{
             });
         	button3.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-    				Intent openStartingView = new Intent("ath.nik.newAds.ADSVIEW");
-    				openStartingView.putExtra("CategoryID", settings.getString("chosenCategoryID", "-1"));
-    				openStartingView.putExtra("AreaID", settings.getString("chosenAreaID", "-1"));
+    				Intent openStartingView = new Intent("ath.nik.newAds.ADSVIEWENDLESSSCROLL");
     				startActivity(openStartingView);
                 }
             });
