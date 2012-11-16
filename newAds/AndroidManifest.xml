@@ -22,14 +22,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".AdsView"
-            android:label="@string/app_name" >
-            <intent-filter>
-                <action android:name="ath.nik.newAds.ADSVIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
             android:name=".FilterAction"
             android:label="@string/app_name" >
             <intent-filter>
@@ -58,6 +50,14 @@
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="ath.nik.newAds.SHOWFILTERS" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+         <activity
+            android:name=".AdsViewEndlessScroll"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="ath.nik.newAds.ADSVIEWENDLESSSCROLL" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
