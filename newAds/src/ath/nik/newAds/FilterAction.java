@@ -94,6 +94,7 @@ public class FilterAction extends Activity{
 			break;
 		case 2:
 			deleteCriteria();
+			this.onResume();
 	      	break;
 		}
      return super.onOptionsItemSelected(item);
