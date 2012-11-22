@@ -1,6 +1,7 @@
 package ath.nik.newAds;
 
 import java.util.ArrayList;
+
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
