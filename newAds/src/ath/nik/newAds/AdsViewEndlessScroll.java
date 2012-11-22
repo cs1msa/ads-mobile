@@ -1,19 +1,17 @@
 package ath.nik.newAds;
 
 import java.util.ArrayList;
+
 import org.ksoap2.serialization.SoapObject;
+
 import android.app.ListActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 
 public class AdsViewEndlessScroll extends ListActivity{
