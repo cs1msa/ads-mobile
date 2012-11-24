@@ -45,7 +45,7 @@ public final class R {
         public static final int categorybtn=0x7f090007;
         public static final int checkBoxEdit=0x7f09000e;
         public static final int delete=0x7f090012;
-        public static final int editText1=0x7f090003;
+        public static final int keywords=0x7f090003;
         public static final int listView1=0x7f09000f;
         public static final int listView2=0x7f090010;
         public static final int list_with_button_btn=0x7f09000a;
