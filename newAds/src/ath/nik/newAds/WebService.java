@@ -44,19 +44,19 @@ public class WebService {
         }
     }
     
-    public WebService(String MethodName, String CategoryID, String AreaID, String start, String end) {
+    public WebService(String CategoryID, String AreaID, String Keywords, String start) {
     	if (android.os.Build.VERSION.SDK_INT>8){
     		StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy); 
     	}
-    	SOAP_ACTION+=MethodName;
-    	METHOD_NAME=MethodName;
+    	SOAP_ACTION+="ReturnAds";
+    	METHOD_NAME="ReturnAds";
     	try{
     		SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);   
     		request.addProperty("IDCategory", CategoryID);
     		request.addProperty("IDArea", AreaID);
-    		request.addProperty("startNumber", start);
-    		request.addProperty("howMany", end);
+    		request.addProperty("startNumber", Keywords);
+    		request.addProperty("howMany", start);
     		SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
             envelope.dotNet=true;
             envelope.setOutputSoapObject(request);                       

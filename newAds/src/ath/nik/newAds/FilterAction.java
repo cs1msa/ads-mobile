@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -18,6 +19,7 @@ public class FilterAction extends Activity{
 	SharedPreferences settings;
 	SharedPreferences.Editor editor;
 	Button button1,button2,button3,button4;
+	TextView keywordText;
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,7 +29,7 @@ public class FilterAction extends Activity{
         button2 = (Button) findViewById(R.id.categorybtn);
         button3 = (Button) findViewById(R.id.searchads);
         button4 = (Button) findViewById(R.id.overview);
-        
+        keywordText = (TextView) findViewById(R.id.keywords);
         
         // Διαχείριση button
  
@@ -52,7 +54,8 @@ public class FilterAction extends Activity{
             });
         	button3.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-    				Intent openStartingView = new Intent("ath.nik.newAds.ADSVIEWENDLESSSCROLL");
+                	VariablesStorage.getInstance().addKeywords(keywordText.getText().toString().split(" "));
+                	Intent openStartingView = new Intent("ath.nik.newAds.ADSVIEWENDLESSSCROLL");
     				startActivity(openStartingView);
                 }
             });
@@ -67,13 +70,13 @@ public class FilterAction extends Activity{
         
         // Τέλος διαχείρισης button
         
+        
         VariablesStorage.getInstance().initializeVariables(); // Αρχικοποίηση global μεταβλητών.
         
         // LOAD
         
         loadCriteria();
-            	    
-    	
+        
 	}
 	
 	// Δημιουργία menu και διαχείριση των αντικειμένων του

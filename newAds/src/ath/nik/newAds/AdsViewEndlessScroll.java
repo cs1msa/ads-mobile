@@ -10,8 +10,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 
 public class AdsViewEndlessScroll extends ListActivity{
@@ -31,7 +35,7 @@ public class AdsViewEndlessScroll extends ListActivity{
         makelist();
         
         
-		// Διαμόρφωση background color για εναλλασσόμενα list items
+		// Διαμόρφωση background color κάθε γραμμής
         
         final int[] colors = new int[] { 0x30000000, 0x30666666 };
         //int pos=lv.getFirstVisiblePosition();
@@ -66,6 +70,23 @@ public class AdsViewEndlessScroll extends ListActivity{
 			}
         	
         });
+        
+        // Διαχείριση expand
+        
+        lv.setOnItemClickListener(new OnItemClickListener(){
+    		@Override
+    		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+    			// TODO Auto-generated method stub
+    			TextView txt=(TextView) arg1;
+    			if(txt.getTag()==null || txt.getTag().equals("false")){
+    				txt.setText(((SoapObject)so.getProperty(arg2)).getProperty(0).toString());
+    				txt.setTag("true");
+    			}else{
+    				txt.setText(items2.get(arg2));
+    				txt.setTag("false");
+    			}
+    		}
+    	});
                 
     }
 	
@@ -75,15 +96,10 @@ public class AdsViewEndlessScroll extends ListActivity{
 		
 		start=stop;
 		stop=String.valueOf(Integer.parseInt(stop)+10);
-		
-       
-	}
-	
-	/*public void makelist(String from, String to){
-		//ws=new WebService("ReturnAds",VariablesStorage.getInstance().getChosenCategoryIDs().toString(),VariablesStorage.getInstance().getChosenAreaIDs().toString(),from,to);
-		ws=new WebService("ReturnAds","-1","-1",from,to);
+		//ws=new WebService("ReturnAds",VariablesStorage.getInstance().getChosenCategoryIDs().toString(),VariablesStorage.getInstance().getChosenAreaIDs().toString(),VariablesStorage.getInstance().getKeywords().toString(),start);
+		ws=new WebService("-1","-1"," ",start);
 		so = ws.getso();
-        try{
+		try{
         	String s1,s2;
             for(int i=0;i<so.getPropertyCount()-1;i++){
             	s1=((SoapObject)so.getProperty(i)).getProperty(0).toString();
@@ -98,47 +114,15 @@ public class AdsViewEndlessScroll extends ListActivity{
             		s2=((SoapObject)so.getProperty(i)).getProperty(0).toString().substring(0, 20);
             	}
             	items2.add(s2+"...");
-            	
-            	
-            	
-            	
-				// Εισαγωγή των δεδομένων στη λίστα και παράλληλα εναλλαγή χρωμάτων
-				// Endless Scroll
-
-
-
-            	
-        		// Διαχείριση expand
-        
-        		lv.setOnItemClickListener(new OnItemClickListener(){
-					@Override
-					public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-						// TODO Auto-generated method stub
-						TextView txt=(TextView) arg1;
-						if(txt.getTag()==null || txt.getTag().equals("false")){
-							txt.setText(((SoapObject)so.getProperty(arg2)).getProperty(0).toString());
-							txt.setTag("true");
-						}else{
-							txt.setText(items2.get(arg2));
-							txt.setTag("false");
-						}
-				
-					}
-        		});
-            	
             }
-            
         }catch(Exception ex){
         	if(so==null){
         		Toast.makeText(this, "Null so", 3000).show();
         	}else if (so.getPropertyCount()==0){
         		Toast.makeText(this, String.valueOf(so.getPropertyCount()), 3000).show();
         	}
-            
-        }
-		
-        
-	}*/
+        }  
+	}
 	
 	@Override
 	protected void onResume(){

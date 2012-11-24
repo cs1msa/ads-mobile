@@ -7,7 +7,7 @@ import java.util.ArrayList;
 public class VariablesStorage
 {
 	private static VariablesStorage instance;
-	private ArrayList<String> chosenAreasTitles,chosenAreasIDs,chosenCategorysTitles,chosenCategorysIDs;
+	private ArrayList<String> chosenAreasTitles,chosenAreasIDs,chosenCategorysTitles,chosenCategorysIDs,keywords;
 	public static void initInstance()
 	{
 		if (instance == null)
@@ -29,7 +29,8 @@ public class VariablesStorage
 	
 	public void initializeVariables(){
 		initializeArea();
-		initializeCategory();	
+		initializeCategory();
+		keywords=new ArrayList<String>();
 	}
 	
 	public void initializeArea(){
@@ -101,6 +102,16 @@ public class VariablesStorage
 	}
   
   
-  // SAVE, LOAD AND DELETE
+  // keywords method
 
+	public void addKeywords(String[] keywords){
+		for(int i=0;i<keywords.length;i++)
+			this.keywords.add(keywords[i]);
+	}
+	public ArrayList<String> getKeywords()
+	{
+		return keywords;
+	}
+	
+	
 }
