@@ -7,6 +7,7 @@ import java.util.ArrayList;
 public class VariablesStorage
 {
 	private static VariablesStorage instance;
+	private String categoryOrArea;
 	private ArrayList<String> chosenAreasTitles,chosenAreasIDs,chosenCategorysTitles,chosenCategorysIDs,keywords;
 	public static void initInstance()
 	{
@@ -113,5 +114,14 @@ public class VariablesStorage
 		return keywords;
 	}
 	
+	// categoryOrArea methods
+	
+	public String getCategoryOrArea(){
+		return categoryOrArea;
+	}
+	
+	public void setCategoryOrArea(String s){
+		categoryOrArea=s;
+	}
 	
 }

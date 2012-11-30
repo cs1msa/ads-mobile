@@ -55,7 +55,7 @@
             android:id="@+id/overview"
             android:layout_width="wrap_content"
             android:layout_height="90dp"
-            android:layout_alignLeft="@+id/areabtn"
+            android:layout_alignLeft="@+id/Area"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:text="@string/overview" />
@@ -66,12 +66,13 @@
             android:layout_height="90dp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
-            android:layout_alignRight="@+id/categorybtn"
+            android:layout_alignRight="@+id/Category"
             android:layout_alignTop="@+id/overview"
             android:text="@string/extras" />
 
         <Button
-            android:id="@+id/areabtn"
+            android:id="@+id/Area"
+            android:tag="Area"
             android:layout_width="150dp"
             android:layout_height="90dp"
             android:layout_above="@+id/overview"
@@ -80,11 +81,12 @@
             android:text="@string/areas" />
 
         <Button
-            android:id="@+id/categorybtn"
+            android:id="@+id/Category"
+            android:tag="Category"
             android:layout_width="150dp"
             android:layout_height="90dp"
-            android:layout_alignBaseline="@+id/areabtn"
-            android:layout_alignBottom="@+id/areabtn"
+            android:layout_alignBaseline="@+id/Area"
+            android:layout_alignBottom="@+id/Area"
             android:layout_alignParentLeft="true"
             android:drawableTop="@drawable/checklist"
             android:text="@string/categories" />
@@ -93,7 +95,7 @@
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/areabtn"
+            android:layout_above="@+id/Area"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:gravity="center"

@@ -40,9 +40,9 @@ public final class R {
         public static final int save=0x7f02000c;
     }
     public static final class id {
-        public static final int areabtn=0x7f090005;
+        public static final int Area=0x7f090005;
+        public static final int Category=0x7f090007;
         public static final int button2=0x7f090006;
-        public static final int categorybtn=0x7f090007;
         public static final int checkBoxEdit=0x7f09000e;
         public static final int delete=0x7f090012;
         public static final int keywords=0x7f090003;
@@ -62,7 +62,7 @@ public final class R {
     }
     public static final class layout {
         public static final int adsscreen=0x7f030000;
-        public static final int firstscreen=0x7f030001;
+        public static final int datadefinition=0x7f030001;
         public static final int list_with_button=0x7f030002;
         public static final int lists=0x7f030003;
         public static final int listview_item_row=0x7f030004;
