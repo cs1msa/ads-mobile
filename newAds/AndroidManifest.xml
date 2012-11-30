@@ -30,18 +30,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".AreaActivityWS"
+            android:name=".OptionLists"
             android:label="@string/app_name" >
             <intent-filter>
-                <action android:name="ath.nik.newAds.AREAACTIVITYWS" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".CategoryActivityWS"
-            android:label="@string/app_name" >
-            <intent-filter>
-                <action android:name="ath.nik.newAds.CATEGORYACTIVITYWS" />
+                <action android:name="ath.nik.newAds.OptionLists" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>

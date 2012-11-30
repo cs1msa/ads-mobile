@@ -23,22 +23,27 @@ public class AdsViewEndlessScroll extends ListActivity{
 	private WebService ws;
 	private SoapObject so;
 	private ListView lv;
-	private String start,stop;
+	private int start;
+	private String Cat,Area,Keywords;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.adsscreen);
         lv = (ListView) findViewById(android.R.id.list);
         lv.setTextFilterEnabled(true);
-        start="0";
-        stop="10";
+        Cat=VariablesStorage.getInstance().getChosenCategoryIDs().toString();
+		Area=VariablesStorage.getInstance().getChosenAreaIDs().toString();
+		Keywords=VariablesStorage.getInstance().getKeywords().toString();
+        Cat=Cat.substring(1, Cat.length()-1);
+        Area=Area.substring(1, Area.length()-1);
+        Keywords=Keywords.substring(1, Keywords.length()-1);
+		start=0;
         makelist();
         
         
 		// Διαμόρφωση background color κάθε γραμμής
         
         final int[] colors = new int[] { 0x30000000, 0x30666666 };
-        //int pos=lv.getFirstVisiblePosition();
         final ArrayAdapter<String> adapt=new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,items2){
         	@Override
         	public View getView(int position, View convertView, ViewGroup parent) {
@@ -58,7 +63,9 @@ public class AdsViewEndlessScroll extends ListActivity{
 			public void onScroll(AbsListView arg0, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 				// TODO Auto-generated method stub
 				if(totalItemCount-visibleItemCount==firstVisibleItem){
-					makelist();
+					//Toast.makeText(arg0.getContext(), String.valueOf(so.getPropertyCount()), 2000).show();
+					//if(so.getPropertyCount()<10)
+						makelist();
 					adapt.notifyDataSetChanged();
 				}
 			}
@@ -91,17 +98,12 @@ public class AdsViewEndlessScroll extends ListActivity{
     }
 	
 	public void makelist(){
-		for(int i=Integer.parseInt(start);i<Integer.parseInt(stop);i++)
-			items2.add(String.valueOf(i));
-		
-		start=stop;
-		stop=String.valueOf(Integer.parseInt(stop)+10);
-		//ws=new WebService("ReturnAds",VariablesStorage.getInstance().getChosenCategoryIDs().toString(),VariablesStorage.getInstance().getChosenAreaIDs().toString(),VariablesStorage.getInstance().getKeywords().toString(),start);
-		ws=new WebService("-1","-1"," ",start);
+		ws=new WebService(Cat,Area,Keywords,start);
 		so = ws.getso();
+		Toast.makeText(this, String.valueOf(so.getPropertyCount()), 2000).show();
 		try{
         	String s1,s2;
-            for(int i=0;i<so.getPropertyCount()-1;i++){
+            for(int i=0;i<10;i++){
             	s1=((SoapObject)so.getProperty(i)).getProperty(0).toString();
             	s2="";
             	for(int j=0;j<3;j++){
@@ -115,11 +117,10 @@ public class AdsViewEndlessScroll extends ListActivity{
             	}
             	items2.add(s2+"...");
             }
+            start=+10;
         }catch(Exception ex){
         	if(so==null){
         		Toast.makeText(this, "Null so", 3000).show();
-        	}else if (so.getPropertyCount()==0){
-        		Toast.makeText(this, String.valueOf(so.getPropertyCount()), 3000).show();
         	}
         }  
 	}

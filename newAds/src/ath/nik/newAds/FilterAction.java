@@ -23,10 +23,10 @@ public class FilterAction extends Activity{
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.firstscreen);
+        setContentView(R.layout.datadefinition);
                 
-        button1 = (Button) findViewById(R.id.areabtn);
-        button2 = (Button) findViewById(R.id.categorybtn);
+        button1 = (Button) findViewById(R.id.Area);
+        button2 = (Button) findViewById(R.id.Category);
         button3 = (Button) findViewById(R.id.searchads);
         button4 = (Button) findViewById(R.id.overview);
         keywordText = (TextView) findViewById(R.id.keywords);
@@ -42,13 +42,15 @@ public class FilterAction extends Activity{
         }else{
         	button1.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-    				Intent openStartingView = new Intent("ath.nik.newAds.AREAACTIVITYWS");
+                	VariablesStorage.getInstance().setCategoryOrArea(button1.getTag().toString());
+    				Intent openStartingView = new Intent("ath.nik.newAds.OptionLists");
     				startActivity(openStartingView);
                 }
             });
         	button2.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-    				Intent openStartingView = new Intent("ath.nik.newAds.CATEGORYACTIVITYWS");
+                	VariablesStorage.getInstance().setCategoryOrArea(button2.getTag().toString());
+    				Intent openStartingView = new Intent("ath.nik.newAds.OptionLists");
     				startActivity(openStartingView);
                 }
             });

@@ -13,46 +13,48 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
-public class CategoryActivityWS extends ListActivity{	
+
+public class OptionLists extends ListActivity{
 	public static final String PREFS_NAME = "MyPrefsFile";
+	private WebService ws;
 	private ArrayList<String> items,father;
 	private ArrayList<WSResults> list,temp=new ArrayList<WSResults>();
-	private WebService ws;
+
 	ListView lv;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.lists);
-	    lv = (ListView) findViewById(android.R.id.list);
-	    lv.setTextFilterEnabled(true);
-       	father=new ArrayList<String>();
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.lists);
+        lv = (ListView) findViewById(android.R.id.list);
+        lv.setTextFilterEnabled(true);
+        father=new ArrayList<String>();
 	    father.add("0");
 	    makeList(father.get(father.size()-1));
-	          	       
+	    
 	    final Button button1 = (Button) findViewById(R.id.listsreturn);
         button1.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
             	finish();
             }
-        });    
+        });  
         
         final Button button2 = (Button) findViewById(R.id.listsdelete);
         button2.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				VariablesStorage.getInstance().initializeCategory();
+				VariablesStorage.getInstance().initializeArea();
 				finish();
-				Intent openStartingView = new Intent("ath.nik.newAds.CATEGORYACTIVITYWS");
+				Intent openStartingView = new Intent("ath.nik.newAds.OptionLists");
 				startActivity(openStartingView);
 			}
 		});
         
         
-	}
+    }
 	public void makeList(String num){
-		ws=new WebService("ReturnCategory",num);
-	    temp=ws.getCategoryList();
+		ws=new WebService("Return"+VariablesStorage.getInstance().getCategoryOrArea(),num);
+	    temp=ws.getList();
 	    ws.finalize();
 	    if(temp.size()==0){
 	       	this.finish();
@@ -62,25 +64,20 @@ public class CategoryActivityWS extends ListActivity{
 			lv.setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,items));
 	       	for(int i=0;i<list.size();i++)
 		       	items.add(list.get(i).getTitle()+" ("+list.get(i).getCount()+")");
-	       	lv.setAdapter(new Adapt(this,list,items));
-	       	lv.setOnItemClickListener(new OnItemClickListener(){
+			lv.setAdapter(new Adapt(this,list,items));
+			lv.setOnItemClickListener(new OnItemClickListener(){
 			
 				@Override
 				public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 					// TODO Auto-generated method stub
 					for(int i=0;i<lv.getCount();i++){
-						if(lv.getItemAtPosition(arg2).toString().contains(list.get(i).getTitle())){								
-							//VariablesStorage.getInstance().setCategoryTitle(list.get(i).getTitle());
-							//VariablesStorage.getInstance().setCategoryID(list.get(i).getId());
+						if(lv.getItemAtPosition(arg2).toString().contains(list.get(i).getTitle())){				
 					    	father.add(list.get(i).getId());
 							makeList(list.get(arg2).getId());
-						}
-							
+						}	
 					}
 				}
-		       	
-		    });
-								
+		    });					
 	    }
 	}
 	@Override
@@ -96,6 +93,5 @@ public class CategoryActivityWS extends ListActivity{
 	    }
 	    return super.onKeyDown(keyCode, event);
 	}
-		
 }
 

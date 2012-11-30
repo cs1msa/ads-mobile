@@ -10,7 +10,7 @@ import org.ksoap2.transport.HttpTransportSE;
 import android.os.StrictMode;
 
 public class WebService {
-    /** Called when the activity is first created. */
+	
 	private final String NAMESPACE = "http://tempuri.org/";
     private final String URL = "http://ads.salampasis.gr/Service1.asmx";
     private String SOAP_ACTION= "http://tempuri.org/";
@@ -44,19 +44,20 @@ public class WebService {
         }
     }
     
-    public WebService(String CategoryID, String AreaID, String Keywords, String start) {
+    public WebService(String CategoryID, String AreaID, String Keywords, int start) {
     	if (android.os.Build.VERSION.SDK_INT>8){
     		StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy); 
     	}
-    	SOAP_ACTION+="ReturnAds";
-    	METHOD_NAME="ReturnAds";
+    	SOAP_ACTION+="SearchQuery";
+    	METHOD_NAME="SearchQuery";
     	try{
     		SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);   
-    		request.addProperty("IDCategory", CategoryID);
-    		request.addProperty("IDArea", AreaID);
-    		request.addProperty("startNumber", Keywords);
-    		request.addProperty("howMany", start);
+    		//request.addProperty("IDCategory", CategoryID);
+    		//request.addProperty("IDArea", AreaID);
+    		request.addProperty("query",Keywords);
+    		request.addProperty("Start", String.valueOf(start));
+    		request.addProperty("HowMany", String.valueOf(start+9));
     		SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
             envelope.dotNet=true;
             envelope.setOutputSoapObject(request);                       
@@ -71,7 +72,8 @@ public class WebService {
     public SoapObject getso(){
     	return result;
     }
-    public ArrayList<WSResults> getAreaList(){
+    
+    public ArrayList<WSResults> getList(){
     	ArrayList<WSResults> l=new ArrayList<WSResults>();
     	for(int i=0;i<result.getPropertyCount()-1;i++){
     		SoapObject so = (SoapObject) result.getProperty(i);
@@ -84,7 +86,7 @@ public class WebService {
     	}
     	return l;
     }
-    public ArrayList<WSResults> getCategoryList(){
+    /*public ArrayList<WSResults> getCategoryList(){
     	ArrayList<WSResults> l=new ArrayList<WSResults>();
     	for(int i=0;i<result.getPropertyCount()-1;i++){
     		SoapObject so = (SoapObject) result.getProperty(i);
@@ -96,7 +98,7 @@ public class WebService {
         	}
     	}
     	return l;
-    }
+    }*/
     @Override
     public void finalize(){
     	try {
