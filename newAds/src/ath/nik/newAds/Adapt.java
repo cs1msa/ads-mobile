@@ -31,7 +31,7 @@ public class Adapt extends ArrayAdapter<String>{
 		
 		holder.CheckEdit.setId(Integer.parseInt(searchArrayList.get(position).getId()));
 		
-		if(con.getClass().getSimpleName().equals("AreaActivityWS")){
+		if(VariablesStorage.getInstance().getCategoryOrArea().equals("Area")){
 			if (VariablesStorage.getInstance().IDAreaExist(searchArrayList.get(position).getId())){
 				holder.CheckEdit.setChecked(true);
 			}else{

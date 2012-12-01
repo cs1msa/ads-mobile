@@ -18,20 +18,16 @@ public class WebService {
     
     private SoapObject result=null;
     
-    public WebService(String MethodName, String s) {
+    public WebService(String MethodName, String IDNumber) {
     	if (android.os.Build.VERSION.SDK_INT>8){
     		StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy); 
     	}
-        SOAP_ACTION+=MethodName;
-    	METHOD_NAME=MethodName;
+        SOAP_ACTION+="Return"+MethodName;
+    	METHOD_NAME="Return"+MethodName;
         try {
             SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);     
-            if(MethodName.equals("ReturnCategory")){
-            	request.addProperty("CategoryIDParam", s);
-            }else{
-            	request.addProperty("AreaIDParam", s);   	
-            }
+            request.addProperty(MethodName+"IDParam", IDNumber);
             request.addProperty("countShow", "true");
             SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
             envelope.dotNet=true;
@@ -49,15 +45,25 @@ public class WebService {
     		StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy); 
     	}
-    	SOAP_ACTION+="SearchQuery";
-    	METHOD_NAME="SearchQuery";
     	try{
-    		SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);   
-    		//request.addProperty("IDCategory", CategoryID);
-    		//request.addProperty("IDArea", AreaID);
-    		request.addProperty("query",Keywords);
-    		request.addProperty("Start", String.valueOf(start));
-    		request.addProperty("HowMany", String.valueOf(start+9));
+    		SoapObject request;
+    		if(Keywords.equals("")){
+        		SOAP_ACTION+="ReturnAds";
+            	METHOD_NAME="ReturnAds";
+            	request = new SoapObject(NAMESPACE, METHOD_NAME); 
+            	request.addProperty("IDCategory", CategoryID);
+        		request.addProperty("IDArea", AreaID);
+        		request.addProperty("startNumber", String.valueOf(start));
+        		request.addProperty("howMany", String.valueOf(VariablesStorage.getInstance().getHowManyNumber()));
+        	}else{
+        		SOAP_ACTION+="SearchQuery";
+            	METHOD_NAME="SearchQuery";
+            	request = new SoapObject(NAMESPACE, METHOD_NAME); 
+            	request.addProperty("query",Keywords);
+            	request.addProperty("Start", String.valueOf(start));
+        		request.addProperty("HowMany", String.valueOf(VariablesStorage.getInstance().getHowManyNumber()));
+        	}
+    		
     		SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
             envelope.dotNet=true;
             envelope.setOutputSoapObject(request);                       
@@ -66,6 +72,7 @@ public class WebService {
             result=(SoapObject)envelope.getResponse();
     	}
     	catch (Exception e) {
+    		result=null;
         }
     }
     
@@ -86,19 +93,18 @@ public class WebService {
     	}
     	return l;
     }
-    /*public ArrayList<WSResults> getCategoryList(){
+    
+    public ArrayList<WSResults> getAds(){
     	ArrayList<WSResults> l=new ArrayList<WSResults>();
-    	for(int i=0;i<result.getPropertyCount()-1;i++){
-    		SoapObject so = (SoapObject) result.getProperty(i);
-    		if(so.getPropertyCount()==3){
-    			l.add(new WSResults(so.getProperty(1).toString(),so.getProperty(0).toString(),so.getProperty(2).toString()));	
-    		}
-    		else{
-    			l.add(new WSResults(so.getProperty(1).toString(),so.getProperty(0).toString(),so.getProperty(2).toString(),so.getProperty(3).toString()));
+    	if(result!=null){
+    		for(int i=0;i<result.getPropertyCount()-1;i++){
+        		SoapObject so = (SoapObject) result.getProperty(i);
+        		l.add(new WSResults(so.getProperty(0).toString(),so.getProperty(1).toString()));
         	}
     	}
     	return l;
-    }*/
+    }
+    
     @Override
     public void finalize(){
     	try {
