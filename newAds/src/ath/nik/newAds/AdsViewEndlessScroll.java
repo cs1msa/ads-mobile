@@ -2,8 +2,6 @@ package ath.nik.newAds;
 
 import java.util.ArrayList;
 
-import org.ksoap2.serialization.SoapObject;
-
 import android.app.ListActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -19,25 +17,34 @@ import android.widget.Toast;
 
 
 public class AdsViewEndlessScroll extends ListActivity{
+	//private ArrayList<String> items1=new ArrayList<String>();
 	private ArrayList<String> items2=new ArrayList<String>();
 	private WebService ws;
-	private SoapObject so;
+	private ArrayList<WSResults> result;
 	private ListView lv;
 	private int start;
 	private String Cat,Area,Keywords;
+	private boolean ContinueSearch=true;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.adsscreen);
         lv = (ListView) findViewById(android.R.id.list);
         lv.setTextFilterEnabled(true);
+        
         Cat=VariablesStorage.getInstance().getChosenCategoryIDs().toString();
 		Area=VariablesStorage.getInstance().getChosenAreaIDs().toString();
 		Keywords=VariablesStorage.getInstance().getKeywords().toString();
         Cat=Cat.substring(1, Cat.length()-1);
+        if (Cat.equals(""))
+        	Cat="-1";
         Area=Area.substring(1, Area.length()-1);
-        Keywords=Keywords.substring(1, Keywords.length()-1);
-		start=0;
+        if (Area.equals(""))
+        	Area="-1";
+                
+        result=new ArrayList<WSResults>();
+        start=0;
         makelist();
         
         
@@ -63,8 +70,7 @@ public class AdsViewEndlessScroll extends ListActivity{
 			public void onScroll(AbsListView arg0, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 				// TODO Auto-generated method stub
 				if(totalItemCount-visibleItemCount==firstVisibleItem){
-					//Toast.makeText(arg0.getContext(), String.valueOf(so.getPropertyCount()), 2000).show();
-					//if(so.getPropertyCount()<10)
+					if(ContinueSearch)
 						makelist();
 					adapt.notifyDataSetChanged();
 				}
@@ -86,7 +92,7 @@ public class AdsViewEndlessScroll extends ListActivity{
     			// TODO Auto-generated method stub
     			TextView txt=(TextView) arg1;
     			if(txt.getTag()==null || txt.getTag().equals("false")){
-    				txt.setText(((SoapObject)so.getProperty(arg2)).getProperty(0).toString());
+    				txt.setText(result.get(arg2).getTitle());
     				txt.setTag("true");
     			}else{
     				txt.setText(items2.get(arg2));
@@ -98,31 +104,29 @@ public class AdsViewEndlessScroll extends ListActivity{
     }
 	
 	public void makelist(){
+		
 		ws=new WebService(Cat,Area,Keywords,start);
-		so = ws.getso();
-		Toast.makeText(this, String.valueOf(so.getPropertyCount()), 2000).show();
-		try{
-        	String s1,s2;
-            for(int i=0;i<10;i++){
-            	s1=((SoapObject)so.getProperty(i)).getProperty(0).toString();
-            	s2="";
-            	for(int j=0;j<3;j++){
-            		if(s1.indexOf(",")!=-1){
-            			s2+=s1.substring(0, s1.indexOf(","));
-            			s1=s1.substring(s1.indexOf(",")+1, s1.length());
-            		}
-            	}
-            	if(s2.length()<2){
-            		s2=((SoapObject)so.getProperty(i)).getProperty(0).toString().substring(0, 20);
-            	}
-            	items2.add(s2+"...");
-            }
-            start=+10;
-        }catch(Exception ex){
-        	if(so==null){
-        		Toast.makeText(this, "Null so", 3000).show();
-        	}
-        }  
+		result.addAll(ws.getAds());
+		
+		if(ws.getAds().size()<VariablesStorage.getInstance().getHowManyNumber())
+			ContinueSearch=false;
+		
+        String s1,s2;
+        for(int i=start;i<result.size();i++){
+           	s1=result.get(i).getTitle();
+           	s2="";
+           	for(int j=0;j<3;j++){
+           		if(s1.indexOf(",")!=-1){
+           			s2+=s1.substring(0, s1.indexOf(","));
+           			s1=s1.substring(s1.indexOf(",")+1, s1.length());
+           		}
+           	}
+           	if(s2.length()<2){
+           		s2=result.get(i).getTitle().substring(0, 20);
+           	}
+           	items2.add(s2+"...");
+        }
+        start+=20;
 	}
 	
 	@Override

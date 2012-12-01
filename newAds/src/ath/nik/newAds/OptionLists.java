@@ -43,7 +43,11 @@ public class OptionLists extends ListActivity{
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				VariablesStorage.getInstance().initializeArea();
+				if(VariablesStorage.getInstance().getCategoryOrArea().equals("Area")){
+					VariablesStorage.getInstance().initializeArea();
+				}else{
+					VariablesStorage.getInstance().initializeCategory();
+				}
 				finish();
 				Intent openStartingView = new Intent("ath.nik.newAds.OptionLists");
 				startActivity(openStartingView);
@@ -53,7 +57,7 @@ public class OptionLists extends ListActivity{
         
     }
 	public void makeList(String num){
-		ws=new WebService("Return"+VariablesStorage.getInstance().getCategoryOrArea(),num);
+		ws=new WebService(VariablesStorage.getInstance().getCategoryOrArea(),num);
 	    temp=ws.getList();
 	    ws.finalize();
 	    if(temp.size()==0){
@@ -70,12 +74,8 @@ public class OptionLists extends ListActivity{
 				@Override
 				public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 					// TODO Auto-generated method stub
-					for(int i=0;i<lv.getCount();i++){
-						if(lv.getItemAtPosition(arg2).toString().contains(list.get(i).getTitle())){				
-					    	father.add(list.get(i).getId());
-							makeList(list.get(arg2).getId());
-						}	
-					}
+					father.add(list.get(arg2).getId());
+					makeList(list.get(arg2).getId());
 				}
 		    });					
 	    }

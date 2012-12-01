@@ -12,6 +12,12 @@ public class WSResults {
 		 this.count="";
 		 this.idFather="0";
 	 }
+	 WSResults(String title, String id){
+		 this.title=title;
+		 this.id=id;
+		 this.count="";
+		 this.idFather="0";
+	 }
 	 WSResults(String title, String id, String count){
 		 this.title=title;
 		 this.id=id;

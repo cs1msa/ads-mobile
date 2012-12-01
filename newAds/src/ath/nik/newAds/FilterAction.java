@@ -56,7 +56,7 @@ public class FilterAction extends Activity{
             });
         	button3.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                	VariablesStorage.getInstance().addKeywords(keywordText.getText().toString().split(" "));
+                	VariablesStorage.getInstance().addKeywords(keywordText.getText().toString());
                 	Intent openStartingView = new Intent("ath.nik.newAds.ADSVIEWENDLESSSCROLL");
     				startActivity(openStartingView);
                 }
