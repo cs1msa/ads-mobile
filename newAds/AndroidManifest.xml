@@ -22,10 +22,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".FilterAction"
+            android:name=".DataDefinition"
             android:label="@string/app_name" >
             <intent-filter>
-                <action android:name="ath.nik.newAds.FILTERACTION" />
+                <action android:name="ath.nik.newAds.DataDefinition" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
@@ -38,18 +38,18 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ShowFilters"
+            android:name=".ShowSelectedFilters"
             android:label="@string/app_name" >
             <intent-filter>
-                <action android:name="ath.nik.newAds.SHOWFILTERS" />
+                <action android:name="ath.nik.newAds.ShowSelectedFilters" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
          <activity
-            android:name=".AdsViewEndlessScroll"
+            android:name=".AdsList"
             android:label="@string/app_name" >
             <intent-filter>
-                <action android:name="ath.nik.newAds.ADSVIEWENDLESSSCROLL" />
+                <action android:name="ath.nik.newAds.AdsList" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>

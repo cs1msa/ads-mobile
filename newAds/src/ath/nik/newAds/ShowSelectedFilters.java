@@ -6,7 +6,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.widget.ListView;
 
-public class ShowFilters extends Activity {
+public class ShowSelectedFilters extends Activity {
 	
 	ListView lv1,lv2;
 	private ArrayList<String> items1,items2;
@@ -14,7 +14,7 @@ public class ShowFilters extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.showfilters);
+		setContentView(R.layout.show_selected_filters);
         lv1 = (ListView) findViewById(R.id.listView1);
         lv1.setTextFilterEnabled(true);
         lv2 = (ListView) findViewById(R.id.listView2);
@@ -24,10 +24,10 @@ public class ShowFilters extends Activity {
         
         for(int i=0;i<VariablesStorage.getInstance().getChosenCategoryTitles().size();i++)	
         	items1.add(VariablesStorage.getInstance().getChosenCategoryTitles().get(i));
-        lv1.setAdapter(new ShowFilterAdapt(this,items1,"Category"));
+        lv1.setAdapter(new ShowSelectedFiltersAdapt(this,items1,"Category"));
         for(int i=0;i<VariablesStorage.getInstance().getChosenAreaTitles().size();i++)	
         	items2.add(VariablesStorage.getInstance().getChosenAreaTitles().get(i));
-        lv2.setAdapter(new ShowFilterAdapt(this,items2,"Area"));
+        lv2.setAdapter(new ShowSelectedFiltersAdapt(this,items2,"Area"));
         
 	}
 		

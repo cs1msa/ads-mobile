@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import android.app.ListActivity;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
@@ -16,9 +17,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-public class AdsViewEndlessScroll extends ListActivity{
+public class AdsList extends ListActivity{
 	//private ArrayList<String> items1=new ArrayList<String>();
-	private ArrayList<String> items2=new ArrayList<String>();
+	private ArrayList<StringManager> items2=new ArrayList<StringManager>();
 	private WebService ws;
 	private ArrayList<WSResults> result;
 	private ListView lv;
@@ -29,7 +30,7 @@ public class AdsViewEndlessScroll extends ListActivity{
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.adsscreen);
+        setContentView(R.layout.adslist);
         lv = (ListView) findViewById(android.R.id.list);
         lv.setTextFilterEnabled(true);
         
@@ -51,12 +52,17 @@ public class AdsViewEndlessScroll extends ListActivity{
 		// Διαμόρφωση background color κάθε γραμμής
         
         final int[] colors = new int[] { 0x30000000, 0x30666666 };
-        final ArrayAdapter<String> adapt=new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,items2){
+        final ArrayAdapter<StringManager> adapt=new ArrayAdapter<StringManager>(this,android.R.layout.simple_list_item_1,items2){
         	@Override
         	public View getView(int position, View convertView, ViewGroup parent) {
         		View view = super.getView(position, convertView, parent);
         		int colorPos = position % colors.length;
         		view.setBackgroundColor(colors[colorPos]);
+        		
+        		TextView tv =(TextView) view.findViewById(android.R.id.text1);
+        		StringManager sm=items2.get(position);
+        		tv.setText(Html.fromHtml(sm.getTitleAndInformationWithDots()));
+        		
         		return view;
         	}
         };
@@ -70,9 +76,10 @@ public class AdsViewEndlessScroll extends ListActivity{
 			public void onScroll(AbsListView arg0, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 				// TODO Auto-generated method stub
 				if(totalItemCount-visibleItemCount==firstVisibleItem){
-					if(ContinueSearch)
+					if(ContinueSearch){
 						makelist();
-					adapt.notifyDataSetChanged();
+						adapt.notifyDataSetChanged();
+					}
 				}
 			}
 
@@ -92,10 +99,10 @@ public class AdsViewEndlessScroll extends ListActivity{
     			// TODO Auto-generated method stub
     			TextView txt=(TextView) arg1;
     			if(txt.getTag()==null || txt.getTag().equals("false")){
-    				txt.setText(result.get(arg2).getTitle());
+    				txt.setText(Html.fromHtml(items2.get(arg2).getFullTitleAndInformation()));
     				txt.setTag("true");
     			}else{
-    				txt.setText(items2.get(arg2));
+    				txt.setText(Html.fromHtml(items2.get(arg2).getTitleAndInformationWithDots()));
     				txt.setTag("false");
     			}
     		}
@@ -111,20 +118,10 @@ public class AdsViewEndlessScroll extends ListActivity{
 		if(ws.getAds().size()<VariablesStorage.getInstance().getHowManyNumber())
 			ContinueSearch=false;
 		
-        String s1,s2;
+        StringManager s1;
         for(int i=start;i<result.size();i++){
-           	s1=result.get(i).getTitle();
-           	s2="";
-           	for(int j=0;j<3;j++){
-           		if(s1.indexOf(",")!=-1){
-           			s2+=s1.substring(0, s1.indexOf(","));
-           			s1=s1.substring(s1.indexOf(",")+1, s1.length());
-           		}
-           	}
-           	if(s2.length()<2){
-           		s2=result.get(i).getTitle().substring(0, 20);
-           	}
-           	items2.add(s2+"...");
+           	s1=new StringManager(result.get(i).getTitle());
+           	items2.add(s1);
         }
         start+=20;
 	}

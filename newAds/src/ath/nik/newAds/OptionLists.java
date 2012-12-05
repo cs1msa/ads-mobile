@@ -24,7 +24,7 @@ public class OptionLists extends ListActivity{
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.lists);
+        setContentView(R.layout.option_lists);
         lv = (ListView) findViewById(android.R.id.list);
         lv.setTextFilterEnabled(true);
         father=new ArrayList<String>();
@@ -68,7 +68,7 @@ public class OptionLists extends ListActivity{
 			lv.setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,items));
 	       	for(int i=0;i<list.size();i++)
 		       	items.add(list.get(i).getTitle()+" ("+list.get(i).getCount()+")");
-			lv.setAdapter(new Adapt(this,list,items));
+			lv.setAdapter(new OptionListsAdapt(this,list,items));
 			lv.setOnItemClickListener(new OnItemClickListener(){
 			
 				@Override

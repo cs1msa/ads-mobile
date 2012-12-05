@@ -16,7 +16,7 @@ public class NewAdsActivity extends Activity {
 				}catch(InterruptedException e){
 					e.printStackTrace();
 				}finally{
-					Intent openStartingView = new Intent("ath.nik.newAds.FILTERACTION");
+					Intent openStartingView = new Intent("ath.nik.newAds.DataDefinition");
 					startActivity(openStartingView);
 				}
 			}
