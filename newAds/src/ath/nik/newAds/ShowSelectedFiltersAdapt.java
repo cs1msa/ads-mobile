@@ -11,13 +11,13 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
-class ShowFilterAdapt extends ArrayAdapter<String>{
+class ShowSelectedFiltersAdapt extends ArrayAdapter<String>{
 
 	private String label;
 	Context con;
 	
-	public ShowFilterAdapt(Context con, ArrayList<String> items, String label) {
-		super(con, R.layout.list_with_button, R.id.list_with_button_txt, items);
+	public ShowSelectedFiltersAdapt(Context con, ArrayList<String> items, String label) {
+		super(con, R.layout.row_with_button, R.id.list_with_button_txt, items);
 		// TODO Auto-generated constructor stub
 		this.con=con;
 		this.label=label;

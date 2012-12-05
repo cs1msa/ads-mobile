@@ -14,7 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-public class FilterAction extends Activity{
+public class DataDefinition extends Activity{
 	public static final String PREFS_NAME = "MyPrefsFile";
 	SharedPreferences settings;
 	SharedPreferences.Editor editor;
@@ -57,7 +57,7 @@ public class FilterAction extends Activity{
         	button3.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                 	VariablesStorage.getInstance().addKeywords(keywordText.getText().toString());
-                	Intent openStartingView = new Intent("ath.nik.newAds.ADSVIEWENDLESSSCROLL");
+                	Intent openStartingView = new Intent("ath.nik.newAds.AdsList");
     				startActivity(openStartingView);
                 }
             });
@@ -65,7 +65,7 @@ public class FilterAction extends Activity{
         
         button4.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-				Intent openStartingView = new Intent("ath.nik.newAds.SHOWFILTERS");
+				Intent openStartingView = new Intent("ath.nik.newAds.ShowSelectedFilters");
 				startActivity(openStartingView);
             }
         });

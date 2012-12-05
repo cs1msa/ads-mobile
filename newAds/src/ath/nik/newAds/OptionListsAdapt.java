@@ -10,12 +10,12 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
-public class Adapt extends ArrayAdapter<String>{
+public class OptionListsAdapt extends ArrayAdapter<String>{
 	private static ArrayList<WSResults> searchArrayList;
 	private Context con;
 	
-	Adapt(Context con, ArrayList<WSResults> results, ArrayList<String> items) {
-		super(con, R.layout.listview_item_row, R.id.txtTitle, items);
+	OptionListsAdapt(Context con, ArrayList<WSResults> results, ArrayList<String> items) {
+		super(con, R.layout.row_with_checkbox, R.id.txtTitle, items);
 		this.con=con;
 		searchArrayList = results;
 	}
