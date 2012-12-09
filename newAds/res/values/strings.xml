@@ -3,6 +3,8 @@
 
     <string name="hello">Hello World, NewAdsActivity!</string>
     <string name="app_name">NewAds</string>
+    <string name="category">Κατηγορία : </string>
+    <string name="area">Περιοχή : </string>
     <string name="categories">Κατηγορίες</string>
     <string name="areas">Περιοχές</string>
     <string name="extras">Πρόσθετα</string>
@@ -12,4 +14,10 @@
     <string name="keywords">Λέξεις κλειδιά</string>
     <string name="home">Αρχική</string>
     <string name="clear">Καθαρισμός Επιλογών</string>
+    <string name="details">Λεπτομέριες</string>
+    <string name="usedfilters">Χρησιμοποιούμε Φίλτρα</string>
+    <string name="startDate">Ημερομηνία έναρξης : </string>
+    <string name="endDate">Ημερομηνία λήξης : </string>
+    <string name="views">Εμφανίσεις : </string>
+    <string name="siteDescription">Πληροφορίες ιστοσελίδας</string>
 </resources>

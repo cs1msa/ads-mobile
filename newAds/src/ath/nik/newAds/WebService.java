@@ -6,7 +6,6 @@ import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
-
 import android.os.StrictMode;
 
 public class WebService {
@@ -28,7 +27,7 @@ public class WebService {
         try {
             SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);     
             request.addProperty(MethodName+"IDParam", IDNumber);
-            request.addProperty("countShow", "true");
+            request.addProperty("countShow", "false");
             SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
             envelope.dotNet=true;
             envelope.setOutputSoapObject(request);                       
@@ -76,22 +75,20 @@ public class WebService {
         }
     }
     
-    public SoapObject getso(){
-    	return result;
-    }
-    
     public ArrayList<WSResults> getList(){
     	ArrayList<WSResults> l=new ArrayList<WSResults>();
     	for(int i=0;i<result.getPropertyCount()-1;i++){
     		SoapObject so = (SoapObject) result.getProperty(i);
-    		if(so.getPropertyCount()==3){
-    			l.add(new WSResults(so.getProperty(0).toString(),so.getProperty(1).toString(),so.getProperty(2).toString()));	
+    		
+    		if(so.getPropertyCount()==2){
+    			l.add(new WSResults(so.getProperty(0).toString(),so.getProperty(1).toString(),"0"/*,so.getProperty(2).toString()*/));	
     		}
     		else{
-    			l.add(new WSResults(so.getProperty(0).toString(),so.getProperty(1).toString(),so.getProperty(2).toString(),so.getProperty(3).toString()));
+    			l.add(new WSResults(so.getProperty(0).toString(),so.getProperty(1).toString(),so.getProperty(2).toString(),"0"/*,so.getProperty(3).toString()*/));
         	}
     	}
     	return l;
+    	
     }
     
     public ArrayList<WSResults> getAds(){
