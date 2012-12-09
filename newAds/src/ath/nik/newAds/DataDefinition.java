@@ -76,8 +76,8 @@ public class DataDefinition extends Activity{
         VariablesStorage.getInstance().initializeVariables(); // Αρχικοποίηση global μεταβλητών.
         
         // LOAD
-        
-        loadCriteria();
+        VariablesStorage.getInstance().updateCategoryXMLFile(this, "Category");
+        VariablesStorage.getInstance().loadCriteria(this);
         
 	}
 	
@@ -94,7 +94,7 @@ public class DataDefinition extends Activity{
     {
 		switch(item.getItemId()){
 		case 1:
-			saveCriteria();
+			 VariablesStorage.getInstance().saveCriteria();
 	     	Toast.makeText(this, "Τα κριτήρια αποθηκεύτηκαν", 2000).show();
 			break;
 		case 2:
@@ -108,66 +108,18 @@ public class DataDefinition extends Activity{
 	
 	// Τέλος δημιουργίας και διαχείρισης menu αντικειμένων
 	
-	
-	
-	
-	// Διαχείριση δεδομένων
-	
-	private void saveCriteria(){
-		
-		// Category save
-		
-		editor.putInt("CategoryArraySize", VariablesStorage.getInstance().getChosenCategoryIDs().size());
-		for(int i=0;i<VariablesStorage.getInstance().getChosenCategoryIDs().size();i++){
-     		editor.putString("CategoryTitleChoice_"+i, VariablesStorage.getInstance().getChosenCategoryTitles().get(i));
-     		editor.putString("CategoryIDChoice_"+i, VariablesStorage.getInstance().getChosenCategoryIDs().get(i));
-     	}
-		
-     	// Areas save
-     	
-     	editor.putInt("AreaArraySize", VariablesStorage.getInstance().getChosenAreaIDs().size());
-     	for(int i=0;i<VariablesStorage.getInstance().getChosenAreaIDs().size();i++){
-     		editor.putString("AreaTitleChoice_"+i, VariablesStorage.getInstance().getChosenAreaTitles().get(i));
-     		editor.putString("AreaIDChoice_"+i, VariablesStorage.getInstance().getChosenAreaIDs().get(i));
-     	}
-     	
-     	editor.commit();
-	}
-	
-	private void loadCriteria(){
-		
-		settings = this.getSharedPreferences(PREFS_NAME, 0);
-    	editor = settings.edit();
-    	
-    	// Load category
-    	
-    	for(int i=0;i<settings.getInt("CategoryArraySize", 0);i++){
-    		VariablesStorage.getInstance().addChosenCategoryTitle(settings.getString("CategoryTitleChoice_"+i,null));
-    		VariablesStorage.getInstance().addChosenCategoryID(settings.getString("CategoryIDChoice_"+i,null));
-    	}
-    	
-    	// Load Area
-    	
-    	for(int i=0;i<settings.getInt("AreaArraySize", 0);i++){
-    		VariablesStorage.getInstance().addChosenAreaTitle(settings.getString("AreaTitleChoice_"+i,null));
-    		VariablesStorage.getInstance().addChosenAreaID(settings.getString("AreaIDChoice_"+i,null));
-    	}
-    	
-    	editor.commit();
-
-	}
-	
 	private void deleteCriteria(){
 		
-		VariablesStorage.getInstance().initializeVariables();
+		// Static variables initialize
 		
-		// Default category delete
+		VariablesStorage.getInstance().initializeCategory();
+		VariablesStorage.getInstance().initializeArea();
+		
+		// Default category and area delete
 		
 		editor.putInt("CategoryArraySize", 0);
-      	
-      	// Default area delete
-      	
       	editor.putInt("AreaArraySize", 0);
+      	
       	editor.commit();
       	
 	}

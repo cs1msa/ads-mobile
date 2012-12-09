@@ -12,6 +12,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 
 public class OptionLists extends ListActivity{
@@ -28,8 +29,8 @@ public class OptionLists extends ListActivity{
         lv = (ListView) findViewById(android.R.id.list);
         lv.setTextFilterEnabled(true);
         father=new ArrayList<String>();
-	    father.add("0");
-	    makeList(father.get(father.size()-1));
+	    father.add("-1");
+	    makeList("-1");
 	    
 	    final Button button1 = (Button) findViewById(R.id.listsreturn);
         button1.setOnClickListener(new View.OnClickListener() {
@@ -57,17 +58,18 @@ public class OptionLists extends ListActivity{
         
     }
 	public void makeList(String num){
-		ws=new WebService(VariablesStorage.getInstance().getCategoryOrArea(),num);
-	    temp=ws.getList();
-	    ws.finalize();
-	    if(temp.size()==0){
+		//ws=new WebService(VariablesStorage.getInstance().getCategoryOrArea(),num);
+	    //temp=ws.getList();
+	    //ws.finalize();
+	    temp=VariablesStorage.getInstance().getList(num);
+		if(temp.size()==0){
 	       	this.finish();
 	    }else{
 	       	list=temp;
 	       	items=new ArrayList<String>();
 			lv.setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,items));
 	       	for(int i=0;i<list.size();i++)
-		       	items.add(list.get(i).getTitle()+" ("+list.get(i).getCount()+")");
+		       	items.add(list.get(i).getTitle()/*+" ("+list.get(i).getCount()+")"*/);
 			lv.setAdapter(new OptionListsAdapt(this,list,items));
 			lv.setOnItemClickListener(new OnItemClickListener(){
 			
@@ -83,7 +85,7 @@ public class OptionLists extends ListActivity{
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 	    if (keyCode == KeyEvent.KEYCODE_BACK) {
-	    	if (father.get(father.size()-1).equals("0")){
+	    	if (father.size()==1){
 	    		finish();
 	    	}else{
 	    		father.remove(father.size()-1);
