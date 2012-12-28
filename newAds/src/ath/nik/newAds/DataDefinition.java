@@ -1,5 +1,9 @@
 package ath.nik.newAds;
 
+import java.io.IOException;
+
+import org.xmlpull.v1.XmlPullParserException;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -24,7 +28,7 @@ public class DataDefinition extends Activity{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.datadefinition);
-                
+        
         button1 = (Button) findViewById(R.id.Area);
         button2 = (Button) findViewById(R.id.Category);
         button3 = (Button) findViewById(R.id.searchads);
@@ -35,25 +39,10 @@ public class DataDefinition extends Activity{
  
         if(!checkInternetConnection()){
         	Toast.makeText(this, "Internet Connection Not Present", 4000).show();
-        	button1.setEnabled(false);
-        	button2.setEnabled(false);
         	button3.setEnabled(false);
         	
         }else{
-        	button1.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                	VariablesStorage.getInstance().setCategoryOrArea(button1.getTag().toString());
-    				Intent openStartingView = new Intent("ath.nik.newAds.OptionLists");
-    				startActivity(openStartingView);
-                }
-            });
-        	button2.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                	VariablesStorage.getInstance().setCategoryOrArea(button2.getTag().toString());
-    				Intent openStartingView = new Intent("ath.nik.newAds.OptionLists");
-    				startActivity(openStartingView);
-                }
-            });
+        	
         	button3.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                 	VariablesStorage.getInstance().addKeywords(keywordText.getText().toString());
@@ -62,7 +51,20 @@ public class DataDefinition extends Activity{
                 }
             });
         }
-        
+        button1.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+            	VariablesStorage.getInstance().setCategoryOrArea(button1.getTag().toString());
+				Intent openStartingView = new Intent("ath.nik.newAds.OptionLists");
+				startActivity(openStartingView);
+            }
+        });
+    	button2.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+            	VariablesStorage.getInstance().setCategoryOrArea(button2.getTag().toString());
+				Intent openStartingView = new Intent("ath.nik.newAds.OptionLists");
+				startActivity(openStartingView);
+            }
+        });
         button4.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 				Intent openStartingView = new Intent("ath.nik.newAds.ShowSelectedFilters");
@@ -76,9 +78,20 @@ public class DataDefinition extends Activity{
         VariablesStorage.getInstance().initializeVariables(); // Αρχικοποίηση global μεταβλητών.
         
         // LOAD
-        VariablesStorage.getInstance().updateCategoryXMLFile(this, "Category");
+        try {
+			VariablesStorage.getInstance().getDataFromXML(this);
+		} catch (XmlPullParserException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         VariablesStorage.getInstance().loadCriteria(this);
-        
+        //Toast.makeText(this, VariablesStorage.getInstance().getChosenCategories().get(0).getId(), 2000).show();
+        //Toast.makeText(this, VariablesStorage.getInstance().getChosenCategories().get(1).getId(), 2000).show();
+        //Toast.makeText(this, VariablesStorage.getInstance().getChosenCategories().get(2).getId(), 2000).show();
+
 	}
 	
 	// Δημιουργία menu και διαχείριση των αντικειμένων του
@@ -94,7 +107,7 @@ public class DataDefinition extends Activity{
     {
 		switch(item.getItemId()){
 		case 1:
-			 VariablesStorage.getInstance().saveCriteria();
+			VariablesStorage.getInstance().saveCriteria(this);
 	     	Toast.makeText(this, "Τα κριτήρια αποθηκεύτηκαν", 2000).show();
 			break;
 		case 2:
@@ -109,6 +122,9 @@ public class DataDefinition extends Activity{
 	// Τέλος δημιουργίας και διαχείρισης menu αντικειμένων
 	
 	private void deleteCriteria(){
+		
+		settings = getSharedPreferences(PREFS_NAME, 0);
+    	editor = settings.edit();
 		
 		// Static variables initialize
 		
@@ -127,11 +143,11 @@ public class DataDefinition extends Activity{
 	@Override
 	protected void onResume(){
 		super.onResume();
-		if(!VariablesStorage.getInstance().getChosenAreaIDs().isEmpty())
+		if(!VariablesStorage.getInstance().getChosenAreas().isEmpty())
 			button1.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.checkedmapicon), null, null);
 		else
 			button1.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.mapicon), null, null);
-		if(!VariablesStorage.getInstance().getChosenCategoryIDs().isEmpty())	
+		if(!VariablesStorage.getInstance().getChosenCategories().isEmpty())	
 			button2.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.checkedchecklist), null, null);
 		else
 			button2.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.checklist), null, null);
