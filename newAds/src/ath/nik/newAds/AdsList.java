@@ -18,7 +18,6 @@ import android.widget.Toast;
 
 
 public class AdsList extends ListActivity{
-	//private ArrayList<String> items1=new ArrayList<String>();
 	private ArrayList<StringManager> items2=new ArrayList<StringManager>();
 	private WebService ws;
 	private ArrayList<WSResults> result;
@@ -26,6 +25,7 @@ public class AdsList extends ListActivity{
 	private int start;
 	private String Cat,Area,Keywords;
 	private boolean ContinueSearch=true;
+	private ArrayList<String> temp;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -34,8 +34,16 @@ public class AdsList extends ListActivity{
         lv = (ListView) findViewById(android.R.id.list);
         lv.setTextFilterEnabled(true);
         
-        Cat=VariablesStorage.getInstance().getChosenCategoryIDs().toString();
-		Area=VariablesStorage.getInstance().getChosenAreaIDs().toString();
+        temp=new ArrayList<String>();
+        for(int i=0;i<VariablesStorage.getInstance().getChosenCategories().size();i++)
+        	temp.add(VariablesStorage.getInstance().getChosenCategories().get(i).getId());
+        Cat=temp.toString();
+        
+        temp.clear();
+        for(int i=0;i<VariablesStorage.getInstance().getChosenAreas().size();i++)
+        	temp.add(VariablesStorage.getInstance().getChosenAreas().get(i).getId());
+		Area=temp.toString();
+		
 		Keywords=VariablesStorage.getInstance().getKeywords().toString();
         Cat=Cat.substring(1, Cat.length()-1);
         if (Cat.equals(""))

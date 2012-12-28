@@ -9,7 +9,6 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -17,10 +16,9 @@ import android.widget.Toast;
 
 public class OptionLists extends ListActivity{
 	public static final String PREFS_NAME = "MyPrefsFile";
-	private WebService ws;
 	private ArrayList<String> items,father;
-	private ArrayList<WSResults> list,temp=new ArrayList<WSResults>();
-
+	private ArrayList<WSResults> list,temp;
+	OptionListsAdapt ola;
 	ListView lv;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -30,6 +28,10 @@ public class OptionLists extends ListActivity{
         lv.setTextFilterEnabled(true);
         father=new ArrayList<String>();
 	    father.add("-1");
+	    
+	    list=new ArrayList<WSResults>();
+	    items=new ArrayList<String>();
+	    
 	    makeList("-1");
 	    
 	    final Button button1 = (Button) findViewById(R.id.listsreturn);
@@ -55,31 +57,30 @@ public class OptionLists extends ListActivity{
 			}
 		});
         
-        
+        lv.setOnItemClickListener(new OnItemClickListener(){
+			
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+				// TODO Auto-generated method stub
+				father.add(list.get(arg2).getId());
+				makeList(list.get(arg2).getId());
+			}
+	    });	
     }
 	public void makeList(String num){
 		//ws=new WebService(VariablesStorage.getInstance().getCategoryOrArea(),num);
 	    //temp=ws.getList();
 	    //ws.finalize();
-	    temp=VariablesStorage.getInstance().getList(num);
-		if(temp.size()==0){
-	       	this.finish();
-	    }else{
-	       	list=temp;
-	       	items=new ArrayList<String>();
-			lv.setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,items));
-	       	for(int i=0;i<list.size();i++)
+		temp=VariablesStorage.getInstance().getList(num);
+		if(!(temp.size()==0)){
+	    	list=temp;
+	       	items.clear();
+	    	for(int i=0;i<list.size();i++)
 		       	items.add(list.get(i).getTitle()/*+" ("+list.get(i).getCount()+")"*/);
-			lv.setAdapter(new OptionListsAdapt(this,list,items));
-			lv.setOnItemClickListener(new OnItemClickListener(){
-			
-				@Override
-				public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-					// TODO Auto-generated method stub
-					father.add(list.get(arg2).getId());
-					makeList(list.get(arg2).getId());
-				}
-		    });					
+	    	ola=new OptionListsAdapt(this,list,items);
+			lv.setAdapter(ola);
+	    }else{
+	    	father.remove(father.size()-1);
 	    }
 	}
 	@Override

@@ -32,7 +32,7 @@ public class OptionListsAdapt extends ArrayAdapter<String>{
 		holder.CheckEdit.setId(Integer.parseInt(searchArrayList.get(position).getId()));
 		
 		if(VariablesStorage.getInstance().getCategoryOrArea().equals("Area")){
-			if (VariablesStorage.getInstance().IDAreaExist(searchArrayList.get(position).getId())){
+			if (VariablesStorage.getInstance().IDExistOnChosenAreas(searchArrayList.get(position).getId())){
 				holder.CheckEdit.setChecked(true);
 			}else{
 				holder.CheckEdit.setChecked(false);
@@ -41,15 +41,14 @@ public class OptionListsAdapt extends ArrayAdapter<String>{
 				@Override
 				public void onClick(View v) {
 					if(!((CheckBox)v).isChecked()){
-						VariablesStorage.getInstance().deleteAreaTitleAndID(searchArrayList.get(position).getId(), searchArrayList.get(position).getTitle());
+						VariablesStorage.getInstance().deleteArea(searchArrayList.get(position)/*.getId(), searchArrayList.get(position).getTitle()*/);
 					}else{
-						VariablesStorage.getInstance().addChosenAreaTitle(searchArrayList.get(position).getTitle());
-						VariablesStorage.getInstance().addChosenAreaID(searchArrayList.get(position).getId());
+						VariablesStorage.getInstance().addChosenArea(searchArrayList.get(position));
 					}
 				}
 			});
 		}else{
-			if (VariablesStorage.getInstance().IDCategoryExist(searchArrayList.get(position).getId())){
+			if (VariablesStorage.getInstance().IDExistOnChosenCategories(searchArrayList.get(position).getId())){
 				holder.CheckEdit.setChecked(true);
 			}else{
 				holder.CheckEdit.setChecked(false);
@@ -59,15 +58,22 @@ public class OptionListsAdapt extends ArrayAdapter<String>{
 				@Override
 				public void onClick(View v) {
 					if(!((CheckBox)v).isChecked()){
-						VariablesStorage.getInstance().deleteCategoryTitleAndID(searchArrayList.get(position).getId(), searchArrayList.get(position).getTitle());
+						VariablesStorage.getInstance().deleteCategory(searchArrayList.get(position));
 					}else{
 						
-						VariablesStorage.getInstance().addChosenCategoryTitle(searchArrayList.get(position).getTitle());
-						VariablesStorage.getInstance().addChosenCategoryID(searchArrayList.get(position).getId());
+						VariablesStorage.getInstance().addChosenCategory(searchArrayList.get(position));
 					}
 				}
 	   
 			});
+			
+			// Διαγραφή checkboxes αν υπάρχει υπομενού
+			
+			if (!VariablesStorage.getInstance().getList(searchArrayList.get(position).getId()).isEmpty()){
+				holder.CheckEdit.setVisibility(View.INVISIBLE);
+			}else{
+				holder.CheckEdit.setVisibility(View.VISIBLE);
+			}
 		}
 
 		return row;

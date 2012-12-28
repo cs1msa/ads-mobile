@@ -32,21 +32,21 @@ class ShowSelectedFiltersAdapt extends ArrayAdapter<String>{
 		}
 		
 		if(label.equals("Category"))
-			holder.DeleteButton.setId(Integer.parseInt(VariablesStorage.getInstance().getChosenCategoryIDs().get(position)));
+			holder.DeleteButton.setId(Integer.parseInt(VariablesStorage.getInstance().getChosenCategories().get(position).getId()));
 		else
-			holder.DeleteButton.setId(Integer.parseInt(VariablesStorage.getInstance().getChosenAreaIDs().get(position)));
+			holder.DeleteButton.setId(Integer.parseInt(VariablesStorage.getInstance().getChosenAreas().get(position).getId()));
 		
 		holder.DeleteButton.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v) {
 				if(label.equals("Category")){
 					//Toast.makeText(con, VariablesStorage.getInstance().getChosenCategoryIDs().get(position)+" - "+VariablesStorage.getInstance().getChosenCategoryTitles().get(position), 2000).show();
-					VariablesStorage.getInstance().deleteCategoryTitleAndID(VariablesStorage.getInstance().getChosenCategoryIDs().get(position), VariablesStorage.getInstance().getChosenCategoryTitles().get(position));
+					VariablesStorage.getInstance().deleteCategory(VariablesStorage.getInstance().getChosenCategories().get(position));
 				}else{
 					//Toast.makeText(con, VariablesStorage.getInstance().getChosenAreaIDs().get(position)+" - "+VariablesStorage.getInstance().getChosenAreaTitles().get(position), 2000).show();
-					VariablesStorage.getInstance().deleteAreaTitleAndID(VariablesStorage.getInstance().getChosenAreaIDs().get(position), VariablesStorage.getInstance().getChosenAreaTitles().get(position));
+					VariablesStorage.getInstance().deleteArea(VariablesStorage.getInstance().getChosenAreas().get(position));
 				}
-				Intent openStartingView = new Intent("ath.nik.newAds.SHOWFILTERS");
+				Intent openStartingView = new Intent("ath.nik.newAds.ShowSelectedFilters");
 				con.startActivity(openStartingView);
 			}
 		});

@@ -22,11 +22,11 @@ public class ShowSelectedFilters extends Activity {
         items1=new ArrayList<String>();
         items2=new ArrayList<String>();
         
-        for(int i=0;i<VariablesStorage.getInstance().getChosenCategoryTitles().size();i++)	
-        	items1.add(VariablesStorage.getInstance().getChosenCategoryTitles().get(i));
+        for(int i=0;i<VariablesStorage.getInstance().getChosenCategories().size();i++)	
+        	items1.add(VariablesStorage.getInstance().getChosenCategories().get(i).getTitle());
         lv1.setAdapter(new ShowSelectedFiltersAdapt(this,items1,"Category"));
-        for(int i=0;i<VariablesStorage.getInstance().getChosenAreaTitles().size();i++)	
-        	items2.add(VariablesStorage.getInstance().getChosenAreaTitles().get(i));
+        for(int i=0;i<VariablesStorage.getInstance().getChosenAreas().size();i++)	
+        	items2.add(VariablesStorage.getInstance().getChosenAreas().get(i).getTitle());
         lv2.setAdapter(new ShowSelectedFiltersAdapt(this,items2,"Area"));
         
 	}
