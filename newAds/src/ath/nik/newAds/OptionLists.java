@@ -17,7 +17,7 @@ import android.widget.Toast;
 public class OptionLists extends ListActivity{
 	public static final String PREFS_NAME = "MyPrefsFile";
 	private ArrayList<String> items,father;
-	private ArrayList<WSResults> list,temp;
+	private ArrayList<TreeNode> list,temp;
 	OptionListsAdapt ola;
 	ListView lv;
 	@Override
@@ -29,7 +29,7 @@ public class OptionLists extends ListActivity{
         father=new ArrayList<String>();
 	    father.add("-1");
 	    
-	    list=new ArrayList<WSResults>();
+	    list=new ArrayList<TreeNode>();
 	    items=new ArrayList<String>();
 	    
 	    makeList("-1");
@@ -46,11 +46,8 @@ public class OptionLists extends ListActivity{
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				if(VariablesStorage.getInstance().getCategoryOrArea().equals("Area")){
-					VariablesStorage.getInstance().initializeArea();
-				}else{
-					VariablesStorage.getInstance().initializeCategory();
-				}
+				
+				VariablesStorage.getInstance().unCheckAll();
 				finish();
 				Intent openStartingView = new Intent("ath.nik.newAds.OptionLists");
 				startActivity(openStartingView);
