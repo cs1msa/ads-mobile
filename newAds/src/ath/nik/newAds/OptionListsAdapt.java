@@ -11,10 +11,10 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 public class OptionListsAdapt extends ArrayAdapter<String>{
-	private static ArrayList<WSResults> searchArrayList;
+	private static ArrayList<TreeNode> searchArrayList;
 	private Context con;
 	
-	OptionListsAdapt(Context con, ArrayList<WSResults> results, ArrayList<String> items) {
+	OptionListsAdapt(Context con, ArrayList<TreeNode> results, ArrayList<String> items) {
 		super(con, R.layout.row_with_checkbox, R.id.txtTitle, items);
 		this.con=con;
 		searchArrayList = results;
@@ -31,42 +31,23 @@ public class OptionListsAdapt extends ArrayAdapter<String>{
 		
 		holder.CheckEdit.setId(Integer.parseInt(searchArrayList.get(position).getId()));
 		
-		if(VariablesStorage.getInstance().getCategoryOrArea().equals("Area")){
-			if (VariablesStorage.getInstance().IDExistOnChosenAreas(searchArrayList.get(position).getId())){
-				holder.CheckEdit.setChecked(true);
-			}else{
-				holder.CheckEdit.setChecked(false);
-			}
-			holder.CheckEdit.setOnClickListener(new OnClickListener(){
-				@Override
-				public void onClick(View v) {
-					if(!((CheckBox)v).isChecked()){
-						VariablesStorage.getInstance().deleteArea(searchArrayList.get(position)/*.getId(), searchArrayList.get(position).getTitle()*/);
-					}else{
-						VariablesStorage.getInstance().addChosenArea(searchArrayList.get(position));
-					}
-				}
-			});
+		if (searchArrayList.get(position).isChecked()){
+			holder.CheckEdit.setChecked(true);
 		}else{
-			if (VariablesStorage.getInstance().IDExistOnChosenCategories(searchArrayList.get(position).getId())){
-				holder.CheckEdit.setChecked(true);
-			}else{
-				holder.CheckEdit.setChecked(false);
-			}
-			
-			holder.CheckEdit.setOnClickListener(new OnClickListener(){
-				@Override
-				public void onClick(View v) {
-					if(!((CheckBox)v).isChecked()){
-						VariablesStorage.getInstance().deleteCategory(searchArrayList.get(position));
-					}else{
-						
-						VariablesStorage.getInstance().addChosenCategory(searchArrayList.get(position));
-					}
+			holder.CheckEdit.setChecked(false);
+		}
+		holder.CheckEdit.setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(View v) {
+				if(!((CheckBox)v).isChecked()){
+					searchArrayList.get(position).unCheck();
+				}else{
+					searchArrayList.get(position).check();
 				}
-	   
-			});
-			
+			}
+		});
+		
+		if(VariablesStorage.getInstance().getCategoryOrArea().equals("Category")){
 			// Διαγραφή checkboxes αν υπάρχει υπομενού
 			
 			if (!VariablesStorage.getInstance().getList(searchArrayList.get(position).getId()).isEmpty()){

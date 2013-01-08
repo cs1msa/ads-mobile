@@ -1,12 +1,14 @@
 package ath.nik.newAds;
 
+
 import java.util.ArrayList;
 
 public class TreeNode {
 	private String title;
 	private String id;
 	private String count;
-	private String idFather;
+	private TreeNode father;
+	private boolean checked;
 	
 	private ArrayList<TreeNode> subNodes=new ArrayList<TreeNode>();
 	
@@ -14,27 +16,12 @@ public class TreeNode {
 		 this.title="";
 		 this.id="";
 		 this.count="";
-		 this.idFather="0";
 	}
-	TreeNode(String title, String id){
-		 this.title=title;
-		 this.id=id;
-		 this.count="0";
-		 this.idFather="0";
-	}
-	TreeNode(String title, String id, String count){
+	TreeNode(String title, String id,String count){
 		 this.title=title;
 		 this.id=id;
 		 this.count=count;
-		 this.idFather="0";
-	}
-	TreeNode(String title, String id, String father, String count){
-		 this.title=title;
-		 this.id=id;
-		 this.count=count;
-		 this.idFather=father;
-	}
-	
+	}	
 	
 	// set/get data
 	
@@ -47,14 +34,30 @@ public class TreeNode {
 	public String getId() {
 		return this.id;
 	}
-	public String getIdFather() {
-		return this.idFather;
+	public TreeNode getFather() {
+		return this.father;
 	}
-	public void setSubNode(TreeNode tn){
+	public void setChildren(TreeNode tn){
 		subNodes.add(tn);
 	}
-	public ArrayList<TreeNode> getSubNodes() {
+	public ArrayList<TreeNode> getChildren() {
 		return this.subNodes;
+	}
+	public void setFather(TreeNode t){
+		this.father=t;
+	}
+	public void check(){
+		this.checked=true;
+		for(int i=0;i<subNodes.size();i++)
+			subNodes.get(i).check();
+	}
+	public void unCheck(){
+		this.checked=false;
+		for(int i=0;i<subNodes.size();i++)
+			subNodes.get(i).unCheck();
+	}
+	public boolean isChecked(){
+		return this.checked;
 	}
 	
 	//
@@ -66,4 +69,9 @@ public class TreeNode {
 			return false;
 	}
 	
+	public String toString(){
+		return title+" "+id+" "+count;
+	}
+	
 }
+

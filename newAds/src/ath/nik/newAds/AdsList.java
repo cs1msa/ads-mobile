@@ -35,13 +35,13 @@ public class AdsList extends ListActivity{
         lv.setTextFilterEnabled(true);
         
         temp=new ArrayList<String>();
-        for(int i=0;i<VariablesStorage.getInstance().getChosenCategories().size();i++)
-        	temp.add(VariablesStorage.getInstance().getChosenCategories().get(i).getId());
+        for(int i=0;i<VariablesStorage.getInstance().getCategories().getChosen().size();i++)
+        	temp.add(VariablesStorage.getInstance().getCategories().getChosen().get(i).getId());
         Cat=temp.toString();
         
         temp.clear();
-        for(int i=0;i<VariablesStorage.getInstance().getChosenAreas().size();i++)
-        	temp.add(VariablesStorage.getInstance().getChosenAreas().get(i).getId());
+        for(int i=0;i<VariablesStorage.getInstance().getAreas().getChosen().size();i++)
+        	temp.add(VariablesStorage.getInstance().getAreas().getChosen().get(i).getId());
 		Area=temp.toString();
 		
 		Keywords=VariablesStorage.getInstance().getKeywords().toString();

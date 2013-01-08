@@ -74,24 +74,6 @@ public class DataDefinition extends Activity{
         
         // Τέλος διαχείρισης button
         
-        
-        VariablesStorage.getInstance().initializeVariables(); // Αρχικοποίηση global μεταβλητών.
-        
-        // LOAD
-        try {
-			VariablesStorage.getInstance().getDataFromXML(this);
-		} catch (XmlPullParserException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        VariablesStorage.getInstance().loadCriteria(this);
-        //Toast.makeText(this, VariablesStorage.getInstance().getChosenCategories().get(0).getId(), 2000).show();
-        //Toast.makeText(this, VariablesStorage.getInstance().getChosenCategories().get(1).getId(), 2000).show();
-        //Toast.makeText(this, VariablesStorage.getInstance().getChosenCategories().get(2).getId(), 2000).show();
-
 	}
 	
 	// Δημιουργία menu και διαχείριση των αντικειμένων του
@@ -128,8 +110,10 @@ public class DataDefinition extends Activity{
 		
 		// Static variables initialize
 		
-		VariablesStorage.getInstance().initializeCategory();
-		VariablesStorage.getInstance().initializeArea();
+    	VariablesStorage.getInstance().setCategoryOrArea("Area");
+		VariablesStorage.getInstance().unCheckAll();
+		VariablesStorage.getInstance().setCategoryOrArea("Category");
+		VariablesStorage.getInstance().unCheckAll();
 		
 		// Default category and area delete
 		
@@ -143,11 +127,11 @@ public class DataDefinition extends Activity{
 	@Override
 	protected void onResume(){
 		super.onResume();
-		if(!VariablesStorage.getInstance().getChosenAreas().isEmpty())
+		if(!VariablesStorage.getInstance().getAreas().getChosen().isEmpty())
 			button1.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.checkedmapicon), null, null);
 		else
 			button1.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.mapicon), null, null);
-		if(!VariablesStorage.getInstance().getChosenCategories().isEmpty())	
+		if(!VariablesStorage.getInstance().getCategories().getChosen().isEmpty())	
 			button2.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.checkedchecklist), null, null);
 		else
 			button2.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.checklist), null, null);

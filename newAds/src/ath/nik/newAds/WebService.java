@@ -75,6 +75,10 @@ public class WebService {
         }
     }
     
+    public SoapObject getWebData(){
+    	return result;
+    }
+    
     public ArrayList<WSResults> getList(){
     	ArrayList<WSResults> l=new ArrayList<WSResults>();
     	for(int i=0;i<result.getPropertyCount()-1;i++){

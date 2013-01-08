@@ -12,6 +12,7 @@ import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 import org.xmlpull.v1.XmlSerializer;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
@@ -22,15 +23,13 @@ import android.widget.Toast;
 public class VariablesStorage
 {
 	public static final String PREFS_NAME = "MyPrefsFile";
-	ArrayList<String> test=new ArrayList<String>();
 	SharedPreferences settings;
 	SharedPreferences.Editor editor;
 	
 	private static VariablesStorage instance;
 	private String categoryOrArea,keywords;
 	private int howMany=20;
-	private ArrayList<WSResults> Categories,Areas;
-	private ArrayList<WSResults> chosenCategories,chosenAreas;
+	private TreeMenu Categories,Areas;
 	
 	public static void initInstance()
 	{
@@ -51,74 +50,9 @@ public class VariablesStorage
 	}
 	
 	public void initializeVariables(){
-		initializeArea();
-		initializeCategory();
-		Categories=new ArrayList<WSResults>();
-		Areas=new ArrayList<WSResults>();
+		Categories=new TreeMenu();
+		Areas=new TreeMenu();
 	}
-	
-	public void initializeArea(){
-		chosenAreas=new ArrayList<WSResults>();
-	}
-	
-	public void initializeCategory(){
-		chosenCategories=new ArrayList<WSResults>();
-	}
-	
-	// Area Methods
-
-	public void addChosenArea(WSResults o){
-		chosenAreas.add(o);
-	}
-	public ArrayList<WSResults> getChosenAreas()
-	{
-		return chosenAreas;
-	}
-	public void deleteArea(WSResults o){
-		chosenAreas.remove(o);
-	}
-	public boolean IDExistOnChosenAreas(String id){
-		for(int i=0;i<chosenAreas.size();i++){
-			if(chosenAreas.get(i).getId().equals(id))
-				return true;
-		}
-		return false;
-	}
-	public WSResults findAreafromXML(String id){
-		for(int i=0;i<Areas.size();i++){
-			if(Areas.get(i).getId().equals(id))
-				return Areas.get(i);
-		}
-		return new WSResults();
-	}
-	
-	// Category Methods
-	
-	public void addChosenCategory(WSResults o){
-		chosenCategories.add(o);
-	}
-	public ArrayList<WSResults> getChosenCategories()
-	{
-		return chosenCategories;
-	}
-	public void deleteCategory(WSResults o){
-		chosenCategories.remove(o);
-	}
-	public boolean IDExistOnChosenCategories(String id){
-		for(int i=0;i<chosenCategories.size();i++){
-			if(chosenCategories.get(i).getId().equals(id))
-				return true;
-		}
-		return false;
-	}
-	public WSResults findCategoryfromXML(String id){
-		for(int i=0;i<Categories.size();i++){
-			if(Categories.get(i).getId().equals(id))
-				return Categories.get(i);
-		}
-		return new WSResults();
-	}
-  
   
   // keywords method
 
@@ -155,15 +89,13 @@ public class VariablesStorage
     	// Load category
     	
     	for(int i=0;i<settings.getInt("CategoryArraySize", 0);i++){
-    		addChosenCategory(findCategoryfromXML(settings.getString("CategoryIDChoice_"+i,null)));
-    		//Toast.makeText(con, i+settings.getString("CategoryIDChoice_"+i,null), 1000).show();
+    		Categories.find(settings.getString("CategoryIDChoice_"+i,null)).check();
     	}
     	// Load Area
     	
     	for(int i=0;i<settings.getInt("AreaArraySize", 0);i++)
-    		addChosenArea(findAreafromXML(settings.getString("AreaIDChoice_"+i,null)));
+    		Areas.find(settings.getString("AreaIDChoice_"+i,null)).check();
  			
-
 	}
 	
 	// Save Criteria
@@ -175,15 +107,17 @@ public class VariablesStorage
 		
 		// Category save
 		
-		editor.putInt("CategoryArraySize", chosenCategories.size());
-		for(int i=0;i<chosenCategories.size();i++){
-     		editor.putString("CategoryIDChoice_"+i, chosenCategories.get(i).getId());
+    	ArrayList<TreeNode> temp=Categories.getChosen();
+		editor.putInt("CategoryArraySize", temp.size());
+		for(int i=0;i<temp.size();i++){
+     		editor.putString("CategoryIDChoice_"+i, temp.get(i).getId());
 		}
      	// Areas save
      	
-     	editor.putInt("AreaArraySize", chosenAreas.size());
-     	for(int i=0;i<chosenAreas.size();i++)
-     		editor.putString("AreaIDChoice_"+i, chosenAreas.get(i).getId());
+		temp=Areas.getChosen();
+     	editor.putInt("AreaArraySize", temp.size());
+     	for(int i=0;i<temp.size();i++)
+     		editor.putString("AreaIDChoice_"+i, temp.get(i).getId());
      	
      	editor.commit();
 	}
@@ -191,105 +125,70 @@ public class VariablesStorage
 	// XML methods
 	
 	
-	public void getDataFromXML(Context con) throws XmlPullParserException, IOException{
-		String[] s=con.fileList();
-		boolean flag=false;
-		for(int i=0;i<s.length;i++){
-			if(s[i].equals("Category"))
-				flag=true;
-		}
+	public void getDataFromXML(Context con, boolean flag) throws XmlPullParserException, IOException{
+		
 		if(!flag){
 			updateCategoryXMLFile(con, "Category");
 			updateCategoryXMLFile(con, "Area");
 		}else{
 			File f1=con.getFileStreamPath("Category");
 			File f2=con.getFileStreamPath("Area");
-			XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
-		    factory.setNamespaceAware(false);
-		    XmlPullParser xpp = factory.newPullParser();
-
+			
 		    // create an input stream to be read by the stream reader.
 		    FileInputStream fis1 = new FileInputStream(f1);
 		    FileInputStream fis2 = new FileInputStream(f2);
+		    retrieveData(fis1,Categories);
+		    //retrieveData(fis2,Areas);
 		    // set the input for the parser using an InputStreamReader
-		    xpp.setInput(new InputStreamReader(fis1));
-		    int eventType = xpp.getEventType();
-		    String title,id,idfather,count;
-		    title="";
-		    id="";
-		    idfather="";
-		    count="";
-		    while (eventType != XmlPullParser.END_DOCUMENT){
-		    	if (eventType == XmlPullParser.START_TAG ){ 
-		    		if ( xpp.getName().equals("title")){
-		    			xpp.next();
-		    			title=xpp.getText();
-		    		} else if(xpp.getName().equals("id")){
-		    			xpp.next();
-		    			id=xpp.getText();
-		    		} else if(xpp.getName().equals("idfather")){
-		    			xpp.next();
-		    			idfather=xpp.getText();
-		    		} else if (xpp.getName().equals("count")){
-		    			xpp.next();
-		    			count=xpp.getText();
-		    		}
-		    	} else if (eventType == XmlPullParser.END_TAG){
-		    		if ( xpp.getName().equals("row")){
-		    			Categories.add(new WSResults(title,id,idfather,count));
-		    		}
-		    	}
-		    	
-		    	xpp.next();
-		    	eventType = xpp.getEventType();
-		    }
-		    xpp.setInput(new InputStreamReader(fis2));
-		    eventType = xpp.getEventType();
-		    title="";
-		    id="";
-		    idfather="";
-		    count="";
-		    while (eventType != XmlPullParser.END_DOCUMENT){
-		    	if (eventType == XmlPullParser.START_TAG ){ 
-		    		if ( xpp.getName().equals("title")){
-		    			xpp.next();
-		    			title=xpp.getText();
-		    		} else if(xpp.getName().equals("id")){
-		    			xpp.next();
-		    			id=xpp.getText();
-		    		} else if(xpp.getName().equals("idfather")){
-		    			xpp.next();
-		    			idfather=xpp.getText();
-		    		} else if (xpp.getName().equals("count")){
-		    			xpp.next();
-		    			count=xpp.getText();
-		    		}
-		    	} else if (eventType == XmlPullParser.END_TAG){
-		    		if ( xpp.getName().equals("row")){
-		    			Areas.add(new WSResults(title,id,idfather,count));
-		    		}
-		    	}
-		    	
-		    	xpp.next();
-		    	eventType = xpp.getEventType();
-		    }
-		   
 		}
-		for(int i=0;i<test.size();i++){
-			if(test.get(i)==null)
-				test.set(i, "null");
-		}
+	}
+	
+	private void retrieveData(FileInputStream f, TreeMenu temp) throws XmlPullParserException, IOException{
+		XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
+		factory.setNamespaceAware(false);
+	    XmlPullParser xpp = factory.newPullParser();
+	    xpp.setInput(new InputStreamReader(f));
+	    int eventType = xpp.getEventType();
+	    String title,id,idfather,count;
+	    title="";
+	    id="";
+	    idfather="";
+	    count="";
+	    while (eventType != XmlPullParser.END_DOCUMENT){
+	    	if (eventType == XmlPullParser.START_TAG ){ 
+	    		if ( xpp.getName().equals("title")){
+	    			xpp.next();
+	    			title=xpp.getText();
+	    		} else if(xpp.getName().equals("id")){
+	    			xpp.next();
+	    			id=xpp.getText();
+	    		} else if(xpp.getName().equals("idfather")){
+	    			xpp.next();
+	    			idfather=xpp.getText();
+	    		} else if (xpp.getName().equals("count")){
+	    			xpp.next();
+	    			count=xpp.getText();
+	    		}
+	    	} else if (eventType == XmlPullParser.END_TAG){
+	    		if ( xpp.getName().equals("row")){
+	    			temp.addNode(new TreeNode(title,id,count), idfather);
+	    		}
+	    	}
+	    	xpp.next();
+	    	eventType = xpp.getEventType();
+	    }
+	    
 	}
 	
 	public void updateCategoryXMLFile(Context con, String method){
 		WebService ws=new WebService(method,"-1");
-		ArrayList<WSResults> temp;
+		ArrayList<TreeNode> temp;
 		if (method.equals("Category")){
-			Categories=ws.getList();
-			temp=Categories;
+			Categories.organizeWebData(ws.getWebData());
+			temp=Categories.getAllData();
 		}else{
-			Areas=ws.getList();
-			temp=Areas;
+			Areas.organizeWebData(ws.getWebData());
+			temp=Areas.getAllData();
 		}
 		
 		
@@ -313,7 +212,7 @@ public class VariablesStorage
 					serializer.endTag(null, "id");
 					
 					serializer.startTag(null, "idfather");
-					serializer.text(temp.get(i).getIdFather());
+					serializer.text(temp.get(i).getFather().getId());
 					serializer.endTag(null, "idfather");
 					
 					serializer.startTag(null, "count");
@@ -333,25 +232,24 @@ public class VariablesStorage
 		}
 	}
 	
-	// list methods
-	
-	public ArrayList<WSResults> getList(String id){
-		ArrayList<WSResults> l=new ArrayList<WSResults>();
-		if (categoryOrArea.equals("Category")){
-			for (int i=0;i<Categories.size();i++){
-				if(Categories.get(i).getIdFather().equals(id))
-					l.add(Categories.get(i));
-			}
-		}else{
-			for (int i=0;i<Areas.size();i++){
-				if(Areas.get(i).getIdFather().equals(id))
-					l.add(Areas.get(i));
-			}
-		}
-		
-		return l;
+	public void unCheckAll(){
+		if (categoryOrArea.equals("Area"))
+			Areas.unCheckAll();
+		else
+			Categories.unCheckAll();
 	}
 	
+	public ArrayList<TreeNode> getList(String id){
+		if (categoryOrArea.equals("Area"))
+			return Areas.getSubMenu(id);
+		else
+			return Categories.getSubMenu(id);
+	}
 	
-	
+	public TreeMenu getAreas(){
+		return Areas;
+	}
+	public TreeMenu getCategories(){
+		return Categories;
+	}
 }
